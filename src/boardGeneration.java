@@ -86,6 +86,7 @@ public class boardGeneration extends Connect4 {
         writer.append("\n");
         writer.flush();
         writer.close();
+        //sdsdsd
         counter++;
     }
 
