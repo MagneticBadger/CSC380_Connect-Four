@@ -5,6 +5,7 @@ import java.util.Random;
 
 /**
  * Created by krm1929 on 3/2/2016.
+ * pull success
  */
 public class boardGeneration extends Connect4 {
     private int[][] board = new int[6][7];
