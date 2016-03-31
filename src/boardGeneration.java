@@ -1,5 +1,6 @@
-import javafx.scene.transform.MatrixType;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -9,57 +10,32 @@ public class boardGeneration extends Connect4 {
     private int[][] board = new int[6][7];
     Random rand = new Random();
     int[] rowCol = new int[2];
+    final int player1 = 1;
+    final int player2 = 2;
+    int counter = 0;
 
-    public int[][] generateBoard()
-    {
+    public int[][] generateBoard() throws IOException {
+        boolean p1 = true;
         int col = rand.nextInt();
-        System.out.println(Math.abs(col % 7));
+        //System.out.println(Math.abs(col % 7));
 
         int row = 0;
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 32; i++) {
+
             col = Math.abs(col % 7);
             checkRowCol(row, col);
-            board[rowCol[0]][rowCol[1]] = 1;
 
-
-            for (int f = board.length - 1; 0 <= f; f--) {
-
-                for (int k = 0; k < board[f].length; k++) {
-                    System.out.print(board[f][k] + " ");
-                }
-                System.out.println();
+            if (p1) {
+                board[rowCol[0]][rowCol[1]] = player1;
+                p1 = false;
+            } else {
+                board[rowCol[0]][rowCol[1]] = player2;
+                p1 = true;
             }
-            System.out.println();
-
+            col = rand.nextInt();
         }
-
-        for (int i = board.length - 1; 0 <= i; i--) {
-            /*
-            while(board[row][col]!=0&&row<board[i].length)
-            {
-                row++;
-                if(board[row][col]==0)
-                {
-                    board[row][col]=1;
-                    break;
-                }
-                if(row>5)
-                {
-                    board[row-1][col] =1;
-                    break;
-                }
-            }
-            */
-
-            //not doing anything
-            for (int j = 0; j < board[i].length; j++) {
-                //board[0][col] = 1;
-            }
-        }
-
-
+        boardWriter(board);
         return board;
     }
 
@@ -69,16 +45,17 @@ public class boardGeneration extends Connect4 {
             //board[row][col] = 1;
             rowCol[0] = row;
             rowCol[1] = col;
-            System.out.println(row + " " + col);
+            //System.out.println(row + " " + col);
             return rowCol;
-        } else if (row==0)
+        } else if (board[row][col] != 0 && row < 5)
         {
-            return checkRowCol(0, generateCol());
+            row += 1;
+            return checkRowCol(row, col);
 
         } else
         {
-            row++;
-            return checkRowCol(row, col);
+            row = 0;
+            return checkRowCol(row, generateCol());
 
         }
 
@@ -86,11 +63,42 @@ public class boardGeneration extends Connect4 {
 
     private int generateCol() {
         int col = rand.nextInt();
-        System.out.println(Math.abs(col % 7));
+        //System.out.println(Math.abs(col % 7));
         col = Math.abs(col % 7);
 
         return col;
 
     }
+
+    public void boardWriter(int[][] board) throws IOException {
+
+        File file = new File("boards.txt");
+        file.createNewFile();
+        FileWriter writer = new FileWriter(file, true);
+        writer.append(counter + ":\n");
+        for (int f = board.length - 1; 0 <= f; f--) {
+
+            for (int k = 0; k < board[f].length; k++) {
+                writer.append(board[f][k] + " ");
+            }
+            writer.append("\n");
+        }
+        writer.append("\n");
+        writer.flush();
+        writer.close();
+        counter++;
+    }
+
+    public void clearboard() {
+        for (int f = board.length - 1; 0 <= f; f--) {
+
+            for (int k = 0; k < board[f].length; k++) {
+                board[f][k] = 0;
+            }
+
+        }
+    }
+
+
 
 }
