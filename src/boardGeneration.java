@@ -11,35 +11,69 @@ public class boardGeneration extends Connect4 {
     private int[][] board = new int[6][7];
     Random rand = new Random();
     int[] rowCol = new int[2];
-    final int player1 = 1;
-    final int player2 = 2;
+    private int players = 1;
     int counter = 0;
+    int winCounter=0;
+
+    int row = 0;
 
     public int[][] generateBoard() throws IOException {
         boolean p1 = true;
         int col = rand.nextInt();
-        //System.out.println(Math.abs(col % 7));
 
-        int row = 0;
 
-        for (int i = 0; i < 32; i++) {
-
+        for (int i = 0; i < 32; i++)
+        {
             col = Math.abs(col % 7);
             checkRowCol(row, col);
-
+            checkWin(rowCol[0],rowCol[1],board,players);
             if (p1) {
-                board[rowCol[0]][rowCol[1]] = player1;
+                board[rowCol[0]][rowCol[1]] = players;
+                if(!checkWin(rowCol[0],rowCol[1],board,players))
+                {
+                    checkWin(rowCol[0],rowCol[1],board,players);
+                }
+                players=2;
                 p1 = false;
             } else {
-                board[rowCol[0]][rowCol[1]] = player2;
+                board[rowCol[0]][rowCol[1]] = players;
+                players =1;
                 p1 = true;
             }
+
             col = rand.nextInt();
         }
         boardWriter(board);
         return board;
     }
-
+    private boolean checkWin(int row,int col, int[][] board,int player)
+    {
+        Boolean checkWin;
+        //Horizontal checking
+        row=0;
+        while(row!=6&&winCounter!=4)
+        {
+            counter=1;
+            for(int f = board.length - 1; 0 <= f; f--)
+            {
+                if(row==6||counter==4)
+                {
+                    break;
+                }
+                if(board[row][col]==player)
+                {
+                    System.out.println("Row:"+(row+1)+" Col:"+(col+1));
+                    System.out.println("Player:" + players);
+                    System.out.println("Board:" +board[row][col]);
+                    System.out.println("Win Counter:" +counter);
+                    printBoard(board);
+                    counter++;
+                }
+                row++;
+            }
+        }
+        return false;
+    }
     private int[] checkRowCol(int row, int col)
     {
         if (board[row][col] == 0) {
@@ -71,15 +105,19 @@ public class boardGeneration extends Connect4 {
 
     }
 
-    public void boardWriter(int[][] board) throws IOException {
-
+    public void boardWriter(int[][] board) throws IOException
+    {
         File file = new File("boards.txt");
+        if(!file.createNewFile()) {
+            file.delete();
+        }
         file.createNewFile();
-        FileWriter writer = new FileWriter(file, true);
+        FileWriter writer = new FileWriter(file,true);
         writer.append(counter + ":\n");
         for (int f = board.length - 1; 0 <= f; f--) {
 
-            for (int k = 0; k < board[f].length; k++) {
+            for (int k = 0; k < board[f].length; k++)
+            {
                 writer.append(board[f][k] + " ");
             }
             writer.append("\n");
@@ -87,7 +125,6 @@ public class boardGeneration extends Connect4 {
         writer.append("\n");
         writer.flush();
         writer.close();
-        //sdsdsd
         counter++;
     }
 
@@ -99,6 +136,26 @@ public class boardGeneration extends Connect4 {
             }
 
         }
+    }
+    private void printBoard(int[][] board)
+    {
+        System.out.println("Row");
+        for (int f = board.length - 1; 0 <= f; f--)
+        {
+
+            System.out.print(" "+(f+1)+" "+"   | ");
+            for (int k = 0; k < board[f].length; k++)
+            {
+                System.out.print(board[f][k]+" ");
+            }
+            System.out.println();
+        }
+        System.out.print("      ----------------\n        ");
+        for(int g=0;g<=board.length;g++)
+        {
+            System.out.print(g+1+" ");
+        }
+        System.out.println("Col");
     }
 
 

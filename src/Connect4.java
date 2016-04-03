@@ -9,10 +9,13 @@ public class Connect4
 
     public static void main(String[] args) throws IOException {
         boardGeneration b = new boardGeneration();
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             b.generateBoard();
             b.clearboard();
         }
+        */
+        b.generateBoard();
+        b.clearboard();
 
     }
 
