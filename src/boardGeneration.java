@@ -19,29 +19,39 @@ public class boardGeneration extends Connect4 {
 
     public int[][] generateBoard() throws IOException {
         boolean p1 = true;
+        boolean win=false;
         int col = rand.nextInt();
 
 
-        for (int i = 0; i < 32; i++)
-        {
+        for (int i = 0; i < 32; i++) {
             col = Math.abs(col % 7);
             checkRowCol(row, col);
-            checkWin(rowCol[0],rowCol[1],board,players);
-            if (p1) {
-                board[rowCol[0]][rowCol[1]] = players;
-                if(!checkWin(rowCol[0],rowCol[1],board,players))
-                {
-                    checkWin(rowCol[0],rowCol[1],board,players);
+            checkWin(rowCol[0], rowCol[1], board, players);
+            if (!win)
+            {
+                if (p1) {
+                    board[rowCol[0]][rowCol[1]] = players;
+                    if (!checkWin(rowCol[0], rowCol[1], board, players)) {
+                        win = checkWin(rowCol[0], rowCol[1], board, players);
+                    }
+                    players = 2;
+                    p1 = false;
+                } else {
+                    board[rowCol[0]][rowCol[1]] = players;
+                    if (!checkWin(rowCol[0], rowCol[1], board, players)) {
+                        checkWin(rowCol[0], rowCol[1], board, players);
+                    }
+                    players = 2;
+                    players = 1;
+                    p1 = true;
                 }
-                players=2;
-                p1 = false;
-            } else {
-                board[rowCol[0]][rowCol[1]] = players;
-                players =1;
-                p1 = true;
+                col = rand.nextInt();
             }
-
-            col = rand.nextInt();
+            else
+            {
+                System.out.println("break that ish");
+                break;
+            }
         }
         boardWriter(board);
         return board;
@@ -56,9 +66,13 @@ public class boardGeneration extends Connect4 {
             counter=1;
             for(int f = board.length - 1; 0 <= f; f--)
             {
-                if(row==6||counter==4)
+                if(row==6)
                 {
                     break;
+                }
+                if (counter==3)
+                {
+                    return true;
                 }
                 if(board[row][col]==player)
                 {
@@ -139,20 +153,36 @@ public class boardGeneration extends Connect4 {
     }
     private void printBoard(int[][] board)
     {
+        String s = (char)27 + "[36mbla-bla-bla";
         System.out.println("Row");
         for (int f = board.length - 1; 0 <= f; f--)
         {
-
-            System.out.print(" "+(f+1)+" "+"   | ");
+            s=(char) 27 + "[30m" + " "+(f+1)+" "+"   | ";
+            System.out.print(s);
             for (int k = 0; k < board[f].length; k++)
             {
-                System.out.print(board[f][k]+" ");
+                if(board[f][k]==1) {
+                    s = (char) 27 + "[31;1m" + board[f][k] + " ";
+                    System.out.print(s);
+                }
+                else if(board[f][k]==2)
+                {
+                    s = (char) 27 + "[34;1m" + board[f][k] + " ";
+                    System.out.print(s);
+                }
+                else
+                {
+                    s=(char) 27 + "[30m" + board[f][k] + " ";
+                    System.out.print(s);
+                }
             }
             System.out.println();
         }
-        System.out.print("      ----------------\n        ");
+        s=(char) 27 + "[30m" + "      ----------------\n        ";
+        System.out.print(s);
         for(int g=0;g<=board.length;g++)
         {
+
             System.out.print(g+1+" ");
         }
         System.out.println("Col");
