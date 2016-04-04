@@ -22,15 +22,17 @@ public class boardGeneration extends Connect4 {
         boolean p1 = true;
         boolean win=false;
         int col = rand.nextInt();
-            for (int i = 0; i < 32; i++) {
+            for (int i = 0; i < 6; i++) {
                 col = Math.abs(col % 7);
-                checkRowCol(row, col);
+                checkWin(row,col,board,players);
                 if (p1) {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
+                    checkWin(row,col,board,players);
                     players = 2;
                     p1 = false;
                 } else {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
+                    checkWin(row,col,board,players);
                     players = 1;
                     p1 = true;
                 }
@@ -51,24 +53,27 @@ public class boardGeneration extends Connect4 {
      */
     public boolean checkWin(int row,int col, int[][] board,int player)
     {
+        System.out.println((row+1)+" "+ (col+1)+" "+player);
         int verticalIndex=0;
         Boolean checkWin=false;
         //Vertical checking
         int piecesInCol =0;
-        int column=0;
         int temp=0;
 
         for(int i=0;i<board.length;i++)
         {
-            if(board[i][column]!=0)
+            if(board[i][col]!=0)
             {
+                System.out.println("temp" + board[i][col]);
                 piecesInCol++;
             }
         }
+
         for(int i=0;i<piecesInCol;i++)
         {
-            temp = board[i][column];
+            temp = board[row][col];
         }
+
         System.out.println(piecesInCol);
 
         /*while(row!=0&& piecesInCol !=4)
