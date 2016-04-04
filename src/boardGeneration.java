@@ -26,19 +26,20 @@ public class boardGeneration extends Connect4 {
         for (int i = 0; i < 32; i++) {
             col = Math.abs(col % 7);
             checkRowCol(row, col);
-            checkWin(rowCol[0], rowCol[1], board, players);
+            win = checkWin(rowCol[0], rowCol[1], board, players);
             if (!win)
             {
                 if (p1) {
                     board[rowCol[0]][rowCol[1]] = players;
-                    if (!checkWin(rowCol[0], rowCol[1], board, players)) {
+                    if (!win) {
                         win = checkWin(rowCol[0], rowCol[1], board, players);
                     }
                     players = 2;
                     p1 = false;
                 } else {
                     board[rowCol[0]][rowCol[1]] = players;
-                    if (!checkWin(rowCol[0], rowCol[1], board, players)) {
+                    if (!win)
+                    {
                         checkWin(rowCol[0], rowCol[1], board, players);
                     }
                     players = 2;
@@ -58,8 +59,17 @@ public class boardGeneration extends Connect4 {
     }
     private boolean checkWin(int row,int col, int[][] board,int player)
     {
-        Boolean checkWin;
+        Boolean checkWin=false;
         //Horizontal checking
+        winCounter=0;
+        for(int i=0;i<board.length-1;i++)
+        {
+            if(board[i][col]!=0)
+            {
+                winCounter++;
+            }
+        }
+        System.out.println(winCounter);
         row=0;
         while(row!=6&&winCounter!=4)
         {
@@ -70,9 +80,10 @@ public class boardGeneration extends Connect4 {
                 {
                     break;
                 }
-                if (counter==3)
+                if (counter==4)
                 {
-                    return true;
+                    checkWin=true;
+                    break;
                 }
                 if(board[row][col]==player)
                 {
@@ -86,7 +97,7 @@ public class boardGeneration extends Connect4 {
                 row++;
             }
         }
-        return false;
+        return checkWin;
     }
     private int[] checkRowCol(int row, int col)
     {
