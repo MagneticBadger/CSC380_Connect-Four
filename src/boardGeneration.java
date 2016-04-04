@@ -10,104 +10,108 @@ import java.util.Random;
 public class boardGeneration extends Connect4 {
     private int[][] board = new int[6][7];
     Random rand = new Random();
-    int[] rowCol = new int[2];
+    private int[] rowCol = new int[2];
     private int players = 1;
     int counter = 0;
-    int winCounter=0;
 
     int row = 0;
 
-    public int[][] generateBoard() throws IOException {
+
+
+    public boolean generateBoard() throws IOException {
         boolean p1 = true;
         boolean win=false;
         int col = rand.nextInt();
-
-
-        for (int i = 0; i < 32; i++) {
-            col = Math.abs(col % 7);
-            checkRowCol(row, col);
-            win = checkWin(rowCol[0], rowCol[1], board, players);
-            if (!win)
-            {
+            for (int i = 0; i < 32; i++) {
+                col = Math.abs(col % 7);
+                checkRowCol(row, col);
                 if (p1) {
-                    board[rowCol[0]][rowCol[1]] = players;
-                    if (!win) {
-                        win = checkWin(rowCol[0], rowCol[1], board, players);
-                    }
+                    getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
                     players = 2;
                     p1 = false;
                 } else {
-                    board[rowCol[0]][rowCol[1]] = players;
-                    if (!win)
-                    {
-                        checkWin(rowCol[0], rowCol[1], board, players);
-                    }
-                    players = 2;
+                    getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
                     players = 1;
                     p1 = true;
                 }
                 col = rand.nextInt();
             }
-            else
-            {
-                System.out.println("break that ish");
-                break;
-            }
-        }
-        boardWriter(board);
-        return board;
+        printBoard(board);
+
+        return win;
     }
-    private boolean checkWin(int row,int col, int[][] board,int player)
+
+    /**
+     * Checking verical columns for wins (4 in a row)
+     * @param row
+     * @param col
+     * @param board
+     * @param player
+     * @return
+     */
+    public boolean checkWin(int row,int col, int[][] board,int player)
     {
+        int verticalIndex=0;
         Boolean checkWin=false;
-        //Horizontal checking
-        winCounter=0;
-        for(int i=0;i<board.length-1;i++)
+        //Vertical checking
+        int piecesInCol =0;
+        int column=0;
+        int temp=0;
+
+        for(int i=0;i<board.length;i++)
         {
-            if(board[i][col]!=0)
+            if(board[i][column]!=0)
             {
-                winCounter++;
+                piecesInCol++;
             }
         }
-        System.out.println(winCounter);
-        row=0;
-        while(row!=6&&winCounter!=4)
+        for(int i=0;i<piecesInCol;i++)
         {
-            counter=1;
+            temp = board[i][column];
+        }
+        System.out.println(piecesInCol);
+
+        /*while(row!=0&& piecesInCol !=4)
+        {
+            counter=0;
             for(int f = board.length - 1; 0 <= f; f--)
             {
-                if(row==6)
+                System.out.println(board[f][col]);
+                if(piecesInCol==0)
                 {
-                    break;
+                    return checkWin;
                 }
-                if (counter==4)
+                if (counter==3)
                 {
                     checkWin=true;
+                    System.out.println("broke that ish");
                     break;
                 }
-                if(board[row][col]==player)
+                if(board[piecesInCol][col]==player)
                 {
                     System.out.println("Row:"+(row+1)+" Col:"+(col+1));
-                    System.out.println("Player:" + players);
+                    System.out.println("Player:" + getPlayers());
                     System.out.println("Board:" +board[row][col]);
-                    System.out.println("Win Counter:" +counter);
-                    printBoard(board);
+                    System.out.println("Row Pieces:" + piecesInCol);
+                    System.out.println("Pieces in Row:" + counter);
                     counter++;
                 }
-                row++;
+                printBoard(board);
+                piecesInCol--;
             }
         }
+        */
         return checkWin;
     }
     private int[] checkRowCol(int row, int col)
     {
-        if (board[row][col] == 0) {
+        if (getBoard()[row][col] == 0) {
             //board[row][col] = 1;
-            rowCol[0] = row;
-            rowCol[1] = col;
+            getRowCol()[0] = row;
+            getRowCol()[1] = col;
             //System.out.println(row + " " + col);
-            return rowCol;
-        } else if (board[row][col] != 0 && row < 5)
+            return getRowCol();
+        } else if (getBoard()[row][col] != 0 && row < 5)
         {
             row += 1;
             return checkRowCol(row, col);
@@ -154,15 +158,22 @@ public class boardGeneration extends Connect4 {
     }
 
     public void clearboard() {
-        for (int f = board.length - 1; 0 <= f; f--) {
+        for (int f = getBoard().length - 1; 0 <= f; f--) {
 
-            for (int k = 0; k < board[f].length; k++) {
-                board[f][k] = 0;
+            for (int k = 0; k < getBoard()[f].length; k++) {
+                getBoard()[f][k] = 0;
             }
-
         }
+        board = new int[6][7];
+        rowCol = new int[2];
+        players = 1;
+        counter = 0;
+
+        row = 0;
+
     }
-    private void printBoard(int[][] board)
+
+    public void printBoard(int[][] board)
     {
         String s = (char)27 + "[36mbla-bla-bla";
         System.out.println("Row");
@@ -200,5 +211,15 @@ public class boardGeneration extends Connect4 {
     }
 
 
+    public int[][] getBoard() {
+        return board;
+    }
 
+    public int[] getRowCol() {
+        return rowCol;
+    }
+
+    public int getPlayers() {
+        return players;
+    }
 }
