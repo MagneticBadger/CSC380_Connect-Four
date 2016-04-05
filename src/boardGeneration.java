@@ -8,41 +8,36 @@ import java.util.Random;
  * pull success pull success
  */
 public class boardGeneration extends Connect4 {
-    private int[][] board = new int[6][7];
     Random rand = new Random();
+    int counter = 0;
+    int row = 0;
+    private int[][] board = new int[6][7];
     private int[] rowCol = new int[2];
     private int players = 1;
-    int counter = 0;
 
-    int row = 0;
-
-
-
-    public boolean generateBoard() throws IOException {
+    public boolean generateBoard(int pieces) throws IOException {
         boolean p1 = true;
         boolean win=false;
         int col = rand.nextInt();
-            for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < pieces; i++) {
                 col = Math.abs(col % 7);
-                checkRowCol(row, col);
+            checkRowCol(row, col);
                 if (p1) {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
                     players = 2;
                     p1 = false;
-                } else
-                {
+                } else {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
                     players = 1;
                     p1 = true;
                 }
-                win = checkWin(row,col,board);
-                if(win)
-                {
-                    return win;
-                }
+            win = checkWin(row, col, board);
+            if (win) {
+                return win;
+            }
                 col = rand.nextInt();
             }
-            printBoard(board);
+        printBoard(board);
         return win;
     }
 
@@ -53,10 +48,10 @@ public class boardGeneration extends Connect4 {
      * @param board
      * @return
      */
-    public boolean checkWin(int row,int col, int[][] board)
+    public boolean checkWin(int row, int col, int[][] board)
     {
         int verticalIndex=0;
-        int horizontalIndex=0;
+        int horizontalIndex = 0;
         Boolean checkWin=false;
         //Vertical checking
         int piecesInCol =0;
@@ -72,67 +67,40 @@ public class boardGeneration extends Connect4 {
         }
         for(int i=0;i<piecesInCol;i++)
         {
-            if(temp==0)
-            {
+            if (temp == 0) {
                 break;
             }
-            if(temp==board[i][col])
-            {
+            if (temp == board[i][col]) {
                 verticalIndex++;
-            }
-            else
-            {
+            } else {
                 temp = board[i][col];
-                verticalIndex=1;
+                verticalIndex = 1;
             }
-            if(verticalIndex==4)
-            {
+            if (verticalIndex == 4) {
                 System.out.println("caught vertical");
-                checkWin=true;
+                checkWin = true;
                 return checkWin;
             }
         }
-        temp = board[getRowCol()[0]][0];
-        for(int i=0;i<board.length;i++)
+        for (int i = 0; i < 6; i++)
         {
-            /*
-            while(board[getRowCol()[0]][i]==0&&i!=6)
+            for (int j = 1; j < 7; j++)
             {
-                i++;
-                horizontalIndex=0;
-            }
-            */
-            if(temp==0)
-            {
-
-                horizontalIndex=0;
-            }
-            if(temp==board[getRowCol()[0]][i])
-            {
-                horizontalIndex++;
-//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
-//                printBoard(board);
-            }
-            else
-            {
-                temp = board[getRowCol()[0]][i];
-                horizontalIndex=1;
-//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
-//                printBoard(board);
-            }
-            if(horizontalIndex==4)
-            {
-                checkWin=true;
-                System.out.println("Broke this ish");
-                return checkWin;
+                if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
+                    horizontalIndex++;
+                } else {
+                    horizontalIndex = 1;
+                }
+                if (horizontalIndex == 4) {
+                    checkWin = true;
+                    System.out.println("caught horizontal");
+                    return checkWin;
+                }
             }
         }
-        System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1));
-        printBoard(board);
-
-
         return checkWin;
     }
+
     private int[] checkRowCol(int row, int col)
     {
         if (getBoard()[row][col] == 0) {

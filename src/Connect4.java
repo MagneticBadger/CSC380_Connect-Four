@@ -5,7 +5,7 @@ import java.io.IOException;
  */
 public class Connect4
 {
-    final int boardPieces = 20;
+    final static int boardPieces = 32;
 
     public static void main(String[] args) throws IOException
     {
@@ -16,11 +16,14 @@ public class Connect4
             b.clearboard();
         }
         */
-        win=b.generateBoard();
-        b.checkWin(b.getRowCol()[0],b.getRowCol()[1],b.getBoard(),b.getPlayers());
+        win = b.generateBoard(boardPieces);
         while(win)
         {
-
+            b.clearboard();
+            win = b.generateBoard(boardPieces);
+            if (!win) {
+                break;
+            }
         }
 
     }
