@@ -9,19 +9,28 @@ public class Connect4
 
     public static void main(String[] args) throws IOException
     {
-        boolean win;
+        boolean win=false;
         boardGeneration b = new boardGeneration();
         /*for (int i = 0; i < 10; i++) {
             b.generateBoard();
             b.clearboard();
         }
         */
+
         win=b.generateBoard();
-        b.checkWin(b.getRowCol()[0],b.getRowCol()[1],b.getBoard(),b.getPlayers());
         while(win)
         {
+            if (win) {
 
+                b.clearboard();
+                win = b.generateBoard();
+            } else
+            {
+                b.printBoard(b.getBoard());
+            }
         }
+
+
 
     }
 
