@@ -22,24 +22,27 @@ public class boardGeneration extends Connect4 {
         boolean p1 = true;
         boolean win=false;
         int col = rand.nextInt();
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 32; i++) {
                 col = Math.abs(col % 7);
-                checkWin(row,col,board,players);
+                checkRowCol(row, col);
                 if (p1) {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
-                    checkWin(row,col,board,players);
                     players = 2;
                     p1 = false;
-                } else {
+                } else
+                {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
-                    checkWin(row,col,board,players);
                     players = 1;
                     p1 = true;
                 }
+                win = checkWin(row,col,board);
+                if(win)
+                {
+                    return win;
+                }
                 col = rand.nextInt();
             }
-        printBoard(board);
-
+            printBoard(board);
         return win;
     }
 
@@ -48,64 +51,86 @@ public class boardGeneration extends Connect4 {
      * @param row
      * @param col
      * @param board
-     * @param player
      * @return
      */
-    public boolean checkWin(int row,int col, int[][] board,int player)
+    public boolean checkWin(int row,int col, int[][] board)
     {
-        System.out.println((row+1)+" "+ (col+1)+" "+player);
         int verticalIndex=0;
+        int horizontalIndex=0;
         Boolean checkWin=false;
         //Vertical checking
         int piecesInCol =0;
+        int piecesInRow = 0;
         int temp=0;
-
+        temp = board[0][col];
         for(int i=0;i<board.length;i++)
         {
             if(board[i][col]!=0)
             {
-                System.out.println("temp" + board[i][col]);
                 piecesInCol++;
             }
         }
-
         for(int i=0;i<piecesInCol;i++)
         {
-            temp = board[row][col];
-        }
-
-        System.out.println(piecesInCol);
-
-        /*while(row!=0&& piecesInCol !=4)
-        {
-            counter=0;
-            for(int f = board.length - 1; 0 <= f; f--)
+            if(temp==0)
             {
-                System.out.println(board[f][col]);
-                if(piecesInCol==0)
-                {
-                    return checkWin;
-                }
-                if (counter==3)
-                {
-                    checkWin=true;
-                    System.out.println("broke that ish");
-                    break;
-                }
-                if(board[piecesInCol][col]==player)
-                {
-                    System.out.println("Row:"+(row+1)+" Col:"+(col+1));
-                    System.out.println("Player:" + getPlayers());
-                    System.out.println("Board:" +board[row][col]);
-                    System.out.println("Row Pieces:" + piecesInCol);
-                    System.out.println("Pieces in Row:" + counter);
-                    counter++;
-                }
-                printBoard(board);
-                piecesInCol--;
+                break;
+            }
+            if(temp==board[i][col])
+            {
+                verticalIndex++;
+            }
+            else
+            {
+                temp = board[i][col];
+                verticalIndex=1;
+            }
+            if(verticalIndex==4)
+            {
+                System.out.println("caught vertical");
+                checkWin=true;
+                return checkWin;
             }
         }
-        */
+        temp = board[getRowCol()[0]][0];
+        for(int i=0;i<board.length;i++)
+        {
+            /*
+            while(board[getRowCol()[0]][i]==0&&i!=6)
+            {
+                i++;
+                horizontalIndex=0;
+            }
+            */
+            if(temp==0)
+            {
+
+                horizontalIndex=0;
+            }
+            if(temp==board[getRowCol()[0]][i])
+            {
+                horizontalIndex++;
+//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
+//                printBoard(board);
+            }
+            else
+            {
+                temp = board[getRowCol()[0]][i];
+                horizontalIndex=1;
+//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
+//                printBoard(board);
+            }
+            if(horizontalIndex==4)
+            {
+                checkWin=true;
+                System.out.println("Broke this ish");
+                return checkWin;
+            }
+        }
+        System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1));
+        printBoard(board);
+
+
         return checkWin;
     }
     private int[] checkRowCol(int row, int col)
@@ -173,7 +198,6 @@ public class boardGeneration extends Connect4 {
         rowCol = new int[2];
         players = 1;
         counter = 0;
-
         row = 0;
 
     }

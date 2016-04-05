@@ -17,6 +17,12 @@ public class Connect4
         }
         */
         win=b.generateBoard();
+        b.checkWin(b.getRowCol()[0],b.getRowCol()[1],b.getBoard(),b.getPlayers());
+        while(win)
+        {
+
+        }
+
     }
 
 }
