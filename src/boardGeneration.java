@@ -82,10 +82,24 @@ public class boardGeneration extends Connect4 {
                 return checkWin;
             }
         }
-        for (int i = 0; i < 6; i++)
-        {
+        //horizontal checking http://www.mathcs.emory.edu/~dsavenk/courses/fall13/cs170/classcode/ConnectFour.java
+        for (int i = 0; i < 6; i++) {
             for (int j = 1; j < 7; j++)
-            {
+        {
+            if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
+                horizontalIndex++;
+            } else {
+                horizontalIndex = 1;
+            }
+            if (horizontalIndex == 4) {
+                checkWin = true;
+                System.out.println("caught horizontal");
+                return checkWin;
+            }
+        }
+        }
+        for (int i = 0; i < 6; i++) {
+            for (int j = 1; j < 7; j++) {
                 if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
                     horizontalIndex++;
                 } else {

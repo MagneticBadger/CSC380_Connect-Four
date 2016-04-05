@@ -25,6 +25,7 @@ public class Connect4
                 break;
             }
         }
+        b.boardWriter(b.getBoard());
 
     }
 
