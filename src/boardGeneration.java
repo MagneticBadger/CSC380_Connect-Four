@@ -93,23 +93,32 @@ public class boardGeneration extends Connect4 {
             }
         }
         temp = board[getRowCol()[0]][0];
-        for(int i=0;i<board.length-1;i++)
+        for(int i=0;i<board.length;i++)
         {
+            /*
             while(board[getRowCol()[0]][i]==0&&i!=6)
             {
                 i++;
                 horizontalIndex=0;
             }
+            */
+            if(temp==0)
+            {
+
+                horizontalIndex=0;
+            }
             if(temp==board[getRowCol()[0]][i])
             {
                 horizontalIndex++;
-                System.out.println("Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
-                printBoard(board);
+//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
+//                printBoard(board);
             }
             else
             {
                 temp = board[getRowCol()[0]][i];
                 horizontalIndex=1;
+//                System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1)+" Col:"+ (i+1));
+//                printBoard(board);
             }
             if(horizontalIndex==4)
             {
@@ -118,6 +127,8 @@ public class boardGeneration extends Connect4 {
                 return checkWin;
             }
         }
+        System.out.println("Temp: "+temp+ "Index: "+horizontalIndex+" Row:"+(getRowCol()[0]+1));
+        printBoard(board);
 
 
         return checkWin;
