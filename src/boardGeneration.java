@@ -52,6 +52,11 @@ public class boardGeneration extends Connect4 {
     {
         int verticalIndex=0;
         int horizontalIndex = 0;
+        int diagonalIndexLeft = 0;
+        int diagonalIndexRight = 0;
+        int diagonalIndexRow = 0;
+        int diagonalIndexCol=0;
+
         Boolean checkWin=false;
         //Vertical checking
         int piecesInCol =0;
@@ -82,32 +87,97 @@ public class boardGeneration extends Connect4 {
                 return checkWin;
             }
         }
-        //horizontal checking http://www.mathcs.emory.edu/~dsavenk/courses/fall13/cs170/classcode/ConnectFour.java
+        //diagonal
         for (int i = 0; i < 6; i++) {
             for (int j = 1; j < 7; j++)
-        {
-            if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
-                horizontalIndex++;
-            } else {
-                horizontalIndex = 1;
-            }
-            if (horizontalIndex == 4) {
-                checkWin = true;
-                System.out.println("caught horizontal");
-                return checkWin;
-            }
-        }
-        }
-        for (int i = 0; i < 6; i++) {
-            for (int j = 1; j < 7; j++) {
+            {
                 if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
                     horizontalIndex++;
-                } else {
+                }
+                else
+                {
                     horizontalIndex = 1;
                 }
-                if (horizontalIndex == 4) {
+                if (horizontalIndex == 4)
+                {
                     checkWin = true;
                     System.out.println("caught horizontal");
+                    return checkWin;
+                }
+        }
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            diagonalIndexRow=0;
+            diagonalIndexLeft=0;
+            for (int j = 1; j < 7; j++) {
+                if (i + j >= 6) break;
+                if (board[j][i + j] != 0 && board[j - 1][(j + i) - 1] == board[j][i + j]) {
+                    diagonalIndexLeft++;
+                } else
+                {
+                    diagonalIndexLeft = 1;
+                }
+                if (diagonalIndexLeft == 4 || diagonalIndexRow == 4 ) {
+                    checkWin = true;
+                    System.out.println("Caught diagonal bottom left to top right");
+                    printBoard(board);
+                    return checkWin;
+                }
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            diagonalIndexRow = 0;
+            for (int j = 1; j < 7; j++)
+            {
+                if(i+j>=6)break;
+                if (board[j + i][j] != 0 && board[(i + j) - 1][j - 1] == board[i + j][j]) {
+                    diagonalIndexRow++;
+                } else {
+                    diagonalIndexRow = 1;
+                }
+                if (diagonalIndexRow == 4 ) {
+                    checkWin = true;
+                    System.out.println("Caught diagonal row");
+                    printBoard(board);
+                    return checkWin;
+                }
+            }
+
+        }
+            for (int i = 0; i < 6; i++) {
+                for (int j = 1; j < 7; j++)
+                {
+                    diagonalIndexRight=0;
+                    if(i-j<0)break;
+                    if (board[j][i - j] != 0 && board[j - 1][(i - j) + 1] == board[j][i - j]) {
+                        diagonalIndexRight++;
+                    } else {
+                        diagonalIndexRight = 1;
+                    }
+                    if (diagonalIndexRight == 4 ) {
+                        checkWin = true;
+                        System.out.println("Caught diagonal righty");
+                        printBoard(board);
+                        return checkWin;
+                    }
+                }
+            }
+        for (int i = 0; i < 6; i++)
+        {
+            diagonalIndexCol=0;
+            for (int j = 4; j >= 0; j--)
+            {
+                if(j-i<0)break;
+                if (board[j-i][j] != 0 && board[(j-i)+1][j + 1] == board[j-i][j]) {
+                    diagonalIndexCol++;
+                } else {
+                    diagonalIndexCol = 1;
+                }
+                if (diagonalIndexCol == 4 ) {
+                    checkWin = true;
+                    System.out.println("Caught diagonal col");
+                    printBoard(board);
                     return checkWin;
                 }
             }
