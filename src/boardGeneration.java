@@ -38,7 +38,7 @@ public class boardGeneration extends Connect4 {
             }
                 col = rand.nextInt();
             }
-        printBoard(board);
+        //printBoard(board);
         return win;
     }
 
@@ -83,7 +83,7 @@ public class boardGeneration extends Connect4 {
                 verticalIndex = 1;
             }
             if (verticalIndex == 4) {
-                System.out.println("caught vertical");
+                //System.out.println("caught vertical");
                 checkWin = true;
                 return checkWin;
             }
@@ -99,7 +99,7 @@ public class boardGeneration extends Connect4 {
                 }
                 if (horizontalIndex == 4) {
                     checkWin = true;
-                    System.out.println("caught horizontal");
+                    //System.out.println("caught horizontal");
                     return checkWin;
                 }
             }
@@ -116,8 +116,8 @@ public class boardGeneration extends Connect4 {
                 }
                 if (diagonalIndexLeft == 4 || diagonalIndexRow == 4 ) {
                     checkWin = true;
-                    System.out.println("Caught diagonal bottom left to top right");
-                    printBoard(board);
+                    //System.out.println("Caught diagonal bottom left to top right");
+                    //printBoard(board);
                     return checkWin;
                 }
             }
@@ -133,8 +133,8 @@ public class boardGeneration extends Connect4 {
                 }
                 if (diagonalIndexRow == 4 ) {
                     checkWin = true;
-                    System.out.println("Caught diagonal row");
-                    printBoard(board);
+                    //System.out.println("Caught diagonal row");
+                    //printBoard(board);
                     return checkWin;
                 }
             }
@@ -152,8 +152,8 @@ public class boardGeneration extends Connect4 {
                     }
                     if (diagonalIndexRight == 4 ) {
                         checkWin = true;
-                        System.out.println("Caught diagonal righty");
-                        printBoard(board);
+                        //System.out.println("Caught diagonal righty");
+                        //printBoard(board);
                         return checkWin;
                     }
                 }
@@ -170,8 +170,8 @@ public class boardGeneration extends Connect4 {
                 }
                 if (diagonalIndexCol == 4 ) {
                     checkWin = true;
-                    System.out.println("Caught diagonal col");
-                    printBoard(board);
+                    //System.out.println("Caught diagonal col");
+                    //printBoard(board);
                     return checkWin;
                 }
             }
