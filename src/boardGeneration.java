@@ -22,7 +22,8 @@ public class boardGeneration extends Connect4 {
         for (int i = 0; i < pieces; i++) {
                 col = Math.abs(col % 7);
             checkRowCol(row, col);
-                if (p1) {
+                if (p1)
+                {
                     getBoard()[getRowCol()[0]][getRowCol()[1]] = getPlayers();
                     players = 2;
                     p1 = false;
@@ -87,29 +88,24 @@ public class boardGeneration extends Connect4 {
                 return checkWin;
             }
         }
-        //diagonal
+        //
         for (int i = 0; i < 6; i++) {
             for (int j = 1; j < 7; j++)
             {
                 if (board[i][j] != 0 && board[i][j] == board[i][j - 1]) {
                     horizontalIndex++;
-                }
-                else
-                {
+                } else {
                     horizontalIndex = 1;
                 }
-                if (horizontalIndex == 4)
-                {
+                if (horizontalIndex == 4) {
                     checkWin = true;
                     System.out.println("caught horizontal");
                     return checkWin;
                 }
-        }
+            }
         }
         for (int i = 0; i < 6; i++)
         {
-            diagonalIndexRow=0;
-            diagonalIndexLeft=0;
             for (int j = 1; j < 7; j++) {
                 if (i + j >= 6) break;
                 if (board[j][i + j] != 0 && board[j - 1][(j + i) - 1] == board[j][i + j]) {
@@ -127,7 +123,6 @@ public class boardGeneration extends Connect4 {
             }
         }
         for (int i = 0; i < 6; i++) {
-            diagonalIndexRow = 0;
             for (int j = 1; j < 7; j++)
             {
                 if(i+j>=6)break;
@@ -165,7 +160,6 @@ public class boardGeneration extends Connect4 {
             }
         for (int i = 0; i < 6; i++)
         {
-            diagonalIndexCol=0;
             for (int j = 4; j >= 0; j--)
             {
                 if(j-i<0)break;
@@ -246,7 +240,7 @@ public class boardGeneration extends Connect4 {
                 getBoard()[f][k] = 0;
             }
         }
-        board = new int[6][7];
+        setBoard(new int[6][7]);
         rowCol = new int[2];
         players = 1;
         counter = 0;
@@ -302,5 +296,9 @@ public class boardGeneration extends Connect4 {
 
     public int getPlayers() {
         return players;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
     }
 }

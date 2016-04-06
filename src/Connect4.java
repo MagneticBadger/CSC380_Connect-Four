@@ -6,27 +6,13 @@ import java.io.IOException;
 public class Connect4
 {
     final static int boardPieces = 32;
+    static int board[][]=new int[6][7];
 
     public static void main(String[] args) throws IOException
     {
-        boolean win;
-        boardGeneration b = new boardGeneration();
-        /*for (int i = 0; i < 10; i++) {
-            b.generateBoard();
-            b.clearboard();
-        }
-        */
-        win = b.generateBoard(boardPieces);
-        while(win)
-        {
-            b.clearboard();
-            win = b.generateBoard(boardPieces);
-            if (!win) {
-                break;
-            }
-        }
-        b.boardWriter(b.getBoard());
-
+        Board b = new Board();
+        b.runBoard();
+        miniMax miniMax= new miniMax(b);
+        miniMax.playAgainstAIConsole();
     }
-
 }
