@@ -19,12 +19,13 @@ public class MiniMaxCodeBytes {
     public void letOpponentMove(){
 
         int move = rand.nextInt(6)+1;
-        while(move<1 || move > 7 || !b.isLegalMove(move-1)){
+        while(move<1 || move > 7 || !b.isLegalMove(move))
+        {
             move = rand.nextInt(6)+1;
         }
 
         //Assume 2 is the opponent
-        b.placeMove(move-1, 2);
+        b.placeMove(move, 2);
     }
 
     //Game Result
@@ -82,7 +83,7 @@ public class MiniMaxCodeBytes {
 
         for(int j=0;j<7;++j){
             //Game has not ended yet
-            if(b.getBoard()[0][j]==0)return -1;
+            if(b.getBoard()[0][j]==0)return -99;
         }
         //Game draw!
         return 0;
@@ -96,7 +97,6 @@ public class MiniMaxCodeBytes {
         else if(aiScore==3)return 100*moveScore;
         else return 1000;
     }
-
     //Evaluate board favorableness for AI
     public int evaluateBoard(Board b){
 
@@ -223,33 +223,39 @@ public class MiniMaxCodeBytes {
         int gameResult = gameResult(b);
         if(gameResult==1)return Integer.MAX_VALUE;
         else if(gameResult==2)return Integer.MIN_VALUE;
-        else if(gameResult==0)return 0;
+        //else if(gameResult==0)return 0;
 
         if(depth==maxDepth)return evaluateBoard(b);
 
         int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
-        for(int j=0;j<=6;++j){
+        for(int j=0;j<=6;++j)
+        {
             if(!b.isLegalMove(j)) continue;
-
-            if(turn==1){
+            if(turn==1)
+            {
                 b.placeMove(j, 1);
                 int currentScore = minimax(depth+1, 2);
                 maxScore = Math.max(currentScore, maxScore);
-                if(depth==0){
+                if(depth==0)
+                {
                     System.out.println("Score for location "+j+" = "+currentScore);
                     if(maxScore==currentScore) nextMoveLocation = j;
                 }
-            }else if(turn==2){
+            }
+            else if(turn==2)
+            {
                 b.placeMove(j, 2);
                 int currentScore = minimax(depth+1, 1);
                 minScore = Math.min(currentScore, minScore);
             }
             b.undoMove(j);
+            b.printBoard();
         }
         return turn==1?maxScore:minScore;
     }
 
-    public int getAIMove(){
+    public int getAIMove()
+    {
         nextMoveLocation = -1;
         minimax(0, 1);
         return nextMoveLocation;
@@ -278,31 +284,26 @@ public class MiniMaxCodeBytes {
 
             int gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("AI 1 Wins!");
+                System.out.println("MiniMax Wins!");
                 break;
             } else if (gameResult == 2) {
-                System.out.println("AI 2 Wins!");
+                System.out.println("Simple Reflex Wins!");
                 break;
             } else if (gameResult == 0) {
                 System.out.println("Draw!");
-                break;
             }
 
             b.placeMove(getAIMove(), 1);
             b.printBoard();
             gameResult = gameResult(b);
-            if(gameResult==1)
-            {
-                System.out.println("AI 1 Wins!");
+            if (gameResult == 1) {
+                System.out.println("MiniMax Wins!");
                 break;
-            }
-            else if(gameResult==2){
-                System.out.println("AI 2 Wins!");
+            } else if (gameResult == 2) {
+                System.out.println("Simple Reflex Wins!");
                 break;
-            }
-            else if(gameResult==0){
+            } else if (gameResult == 0) {
                 System.out.println("Draw!");
-                break;
             }
         }
 

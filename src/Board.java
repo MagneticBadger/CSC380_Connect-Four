@@ -11,6 +11,7 @@ public class Board
     public final int columns = 7;
     public int[][] board;
     final static int boardPieces = 32;
+    int[] rowsEdited =new int[42];
 
     public Board(int[][] board)
     {
@@ -18,11 +19,19 @@ public class Board
     }
 
     //Placing a Move on the board
-    public boolean placeMove(int column, int player){
-        if(!isLegalMove(column)) {System.out.println("Illegal move!"); return false;}
-        for(int i=5;i>=0;--i){
+    public boolean placeMove(int column, int player)
+    {
+
+        if(!isLegalMove(column))
+        {
+            System.out.println("Illegal move!");
+            return false;
+        }
+        for(int i=0;i<6;i++)
+        {
             if(board[i][column] == 0) {
-                board[i][column] = (byte)player;
+                board[i][column] = player;
+                printBoard();
                 return true;
             }
         }
@@ -31,9 +40,29 @@ public class Board
 
     public boolean isLegalMove(int column)
     {
-        return board[0][column]==0;
+        for(int i=0;i<board.length;i++)
+        {
+            if (board[i][column]==0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
-    public void undoMove(int column){
+    public int findRow(int column)
+    {
+        for(int i=0;i<board.length;i++)
+        {
+            if (board[i][column]==0)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void undoMove(int column)
+    {
         for(int i=0;i<=5;++i){
             if(board[i][column] != 0) {
                 board[i][column] = 0;
@@ -41,7 +70,6 @@ public class Board
             }
         }
     }
-
     public void printBoard()
     {
         String s = (char)27 + "[36mbla-bla-bla";
