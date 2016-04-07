@@ -3,10 +3,12 @@ import java.io.IOException;
 /**
  * Created by krm1929 on 4/6/2016.
  */
-public class Board extends boardGeneration {
+public class Board
+{
     public final int rows = 6;
     public final int columns = 7;
-    int[][] board = new int[rows][columns];
+    private int[][] board;
+    final static int boardPieces = 32;
 
     public int[][] runBoard() throws IOException
     {
@@ -22,43 +24,58 @@ public class Board extends boardGeneration {
             }
         }
         b.boardWriter(b.getBoard());
-        board = b.getBoard();
-        return board;
+        setBoard(b.getBoard());
+        return getBoard();
     }
 
-    public int isFinished() {
+    public int isFinished()
+    {
+        System.out.println();
         //check for win horizontally
-        for (int row = 0; row < rows; row++)
-            for (int col = 0; col < columns - 3; col++)
-                if (board[row][col] != ' ' &&
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns - 3; col++) {
+                if (board[row][col] != 0 &&
                         board[row][col] == board[row][col + 1] &&
                         board[row][col] == board[row][col + 2] &&
-                        board[row][col] == board[row][col + 3])
+                        board[row][col] == board[row][col + 3]) {
                     return board[row][col];
+                }
+            }
+        }
+
         //check for win vertically
-        for (int row = 0; row < rows - 3; row++)
-            for (int col = 0; col < columns; col++)
-                if (board[row][col] != ' ' &&
+        for (int row = 0; row < rows - 3; row++) {
+            for (int col = 0; col < columns; col++) {
+                if (board[row][col] != 0 &&
                         board[row][col] == board[row + 1][col] &&
                         board[row][col] == board[row + 2][col] &&
-                        board[row][col] == board[row + 3][col])
+                        board[row][col] == board[row + 3][col]) {
                     return board[row][col];
+                }
+            }
+        }
         //check for win diagonally (upper left to lower right)
-        for (int row = 0; row < rows - 3; row++)
-            for (int col = 0; col < columns - 3; col++)
-                if (board[row][col] != ' ' &&
+        for (int row = 0; row < rows - 3; row++) {
+            for (int col = 0; col < columns - 3; col++) {
+                if (board[row][col] != 0 &&
                         board[row][col] == board[row + 1][col + 1] &&
                         board[row][col] == board[row + 2][col + 2] &&
-                        board[row][col] == board[row + 3][col + 3])
+                        board[row][col] == board[row + 3][col + 3]) {
                     return board[row][col];
+                }
+            }
+        }
         //check for win diagonally (lower left to upper right)
-        for (int row = 3; row < rows; row++)
-            for (int col = 0; col < columns - 3; col++)
-                if (board[row][col] != ' ' &&
+        for (int row = 3; row < rows; row++) {
+            for (int col = 0; col < columns - 3; col++) {
+                if (board[row][col] != 0 &&
                         board[row][col] == board[row - 1][col + 1] &&
                         board[row][col] == board[row - 2][col + 2] &&
-                        board[row][col] == board[row - 3][col + 3])
+                        board[row][col] == board[row - 3][col + 3]) {
                     return board[row][col];
+                }
+            }
+        }
         return -1;
     }
 
@@ -72,7 +89,7 @@ public class Board extends boardGeneration {
         if (column > 6 || column < 0 || board[0][column] != 0)
             return false;
         else {
-            for (int i = rows - 1; i >= 0; i--)
+            for (int i = rows-1; i >= 0; i--)
                 if (board[i][column] == 0) {
                     board[i][column] = currentPlayer;
                     break;
@@ -83,8 +100,8 @@ public class Board extends boardGeneration {
 
     public void remove(int column) {
         for (int i = 0; i < rows; i++) {
-            if (board[i][column] != ' ') {
-                board[i][column] = ' ';
+            if (getBoard()[i][column] != 0) {
+                getBoard()[i][column] = 0;
                 break;
             }
         }
@@ -124,5 +141,13 @@ public class Board extends boardGeneration {
             System.out.print(g+1+" ");
         }
         System.out.println("Col");
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
     }
 }
