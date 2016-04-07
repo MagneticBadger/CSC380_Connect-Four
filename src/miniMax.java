@@ -201,7 +201,7 @@ public class miniMax
         return turn==1?maxScore:minScore;
     }
     public void startMinimax()
-    {
+    {//
         while(true){
             letOpponentMove();
             b.printBoard(b.getBoard());
