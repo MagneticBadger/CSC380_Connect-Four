@@ -34,13 +34,13 @@ public class MiniMaxCodeBytes {
         int aiScore = 0, humanScore = 0;
         for(int i=5;i>=0;--i){
             for(int j=0;j<=6;++j){
-                if(b.board[i][j]==0) continue;
+                if(b.getBoard()[i][j]==0) continue;
 
                 //Checking cells to the right
                 if(j<=3){
                     for(int k=0;k<4;++k){
-                        if(b.board[i][j+k]==1) aiScore++;
-                        else if(b.board[i][j+k]==2) humanScore++;
+                        if(b.getBoard()[i][j+k]==1) aiScore++;
+                        else if(b.getBoard()[i][j+k]==2) humanScore++;
                         else break;
                     }
                     if(aiScore==4)return 1; else if (humanScore==4)return 2;
@@ -50,8 +50,8 @@ public class MiniMaxCodeBytes {
                 //Checking cells up
                 if(i>=3){
                     for(int k=0;k<4;++k){
-                        if(b.board[i-k][j]==1) aiScore++;
-                        else if(b.board[i-k][j]==2) humanScore++;
+                        if(b.getBoard()[i-k][j]==1) aiScore++;
+                        else if(b.getBoard()[i-k][j]==2) humanScore++;
                         else break;
                     }
                     if(aiScore==4)return 1; else if (humanScore==4)return 2;
@@ -61,8 +61,8 @@ public class MiniMaxCodeBytes {
                 //Checking diagonal up-right
                 if(j<=3 && i>= 3){
                     for(int k=0;k<4;++k){
-                        if(b.board[i-k][j+k]==1) aiScore++;
-                        else if(b.board[i-k][j+k]==2) humanScore++;
+                        if(b.getBoard()[i-k][j+k]==1) aiScore++;
+                        else if(b.getBoard()[i-k][j+k]==2) humanScore++;
                         else break;
                     }
                     if(aiScore==4)return 1; else if (humanScore==4)return 2;
@@ -72,7 +72,7 @@ public class MiniMaxCodeBytes {
                 //Checking diagonal up-left
                 if(j>=3 && i>=3){
                     for(int k=0;k<4;++k){
-                        if(b.board[i-k][j-k]==1) aiScore++;
+                        if(b.getBoard()[i-k][j-k]==1) aiScore++;
                         else if(b.board[i-k][j-k]==2) humanScore++;
                         else break;
                     }
@@ -84,7 +84,7 @@ public class MiniMaxCodeBytes {
 
         for(int j=0;j<7;++j){
             //Game has not ended yet
-            if(b.board[0][j]==0)return -1;
+            if(b.getBoard()[0][j]==0)return -1;
         }
         //Game draw!
         return 0;
