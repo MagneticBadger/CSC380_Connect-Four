@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -6,224 +5,83 @@ import java.util.Scanner;
  */
 public class miniMax
 {
-    private Board b;
-    private Random rand;
-    private int nextMoveLocation=-1;
-    private int maxDepth = 8;
+    private int mySymbol = 1;
+    private int opponentSymbol = 2;
+    private int searchLimit;
+    private int maxColumn;
+    Board board;
 
-    public miniMax(Board b){
-        this.b = b;
-        rand = new Random();
-    }
-    public void letOpponentMove()
+
+    public miniMax(int limit,Board b)
     {
-        System.out.println("Your move (1-7): ");
-        int move = Math.abs((rand.nextInt()*100)%6);
-        while(move<1 || move > 7 || !b.isLegalMove(move)){
-            System.out.println("Invalid move.\n\nYour move (1-7): ");
-            move = Math.abs((rand.nextInt()*100)%6);
-        }
-
-        b.placeMove(move, 1);
+        this.searchLimit = limit;
+        this.board=b;
     }
 
-    int calculateScore(int aiScore, int moreMoves){
-        int moveScore = 4 - moreMoves;
-        if(aiScore==0)return 0;
-        else if(aiScore==1)return 1*moveScore;
-        else if(aiScore==2)return 10*moveScore;
-        else if(aiScore==3)return 100*moveScore;
-        else return 1000;
+    /**
+     * This method calls the miniMaxValue method and it returns the
+     * column that corresponds to the column with the highest minimax
+     * value.
+     */
+    public int miniMaxDecision(Board board)
+    {
+        miniMaxValue(board, 0, opponentSymbol);
+        return maxColumn;
     }
-    public int evaluateBoard(Board b) {
 
-        int aiScore = 1;
-        int score = 0;
-        int blanks = 0;
-        int k = 0, moreMoves = 0;
-        for (int i = 5; i >= 0; --i) {
-            for (int j = 0; j <= 6; ++j) {
-
-                if (b.getBoard()[i][j] == 0 || b.getBoard()[i][j] == 2) continue;
-
-                if (j <= 3) {
-                    for (k = 1; k < 4; ++k) {
-                        if (b.getBoard()[i][j + k] == 1) aiScore++;
-                        else if (b.getBoard()[i][j + k] == 2) {
-                            aiScore = 0;
-                            blanks = 0;
-                            break;
-                        } else blanks++;
-                    }
-
-                    moreMoves = 0;
-                    if (blanks > 0)
-                        for (int c = 1; c < 4; ++c) {
-                            int column = j + c;
-                            for (int m = i; m <= 5; m++) {
-                                if (b.getBoard()[m][column] == 0) moreMoves++;
-                                else break;
-                            }
-                        }
-
-                    if (moreMoves != 0) score += calculateScore(aiScore, moreMoves);
-                    aiScore = 1;
-                    blanks = 0;
-                }
-
-                if (i >= 3) {
-                    for (k = 1; k < 4; ++k) {
-                        if (b.getBoard()[i - k][j] == 1) aiScore++;
-                        else if (b.getBoard()[i - k][j] == 2) {
-                            aiScore = 0;
-                            break;
-                        }
-                    }
-                    moreMoves = 0;
-
-                    if (aiScore > 0) {
-                        int column = j;
-                        for (int m = i - k + 1; m <= i - 1; m++) {
-                            if (b.getBoard()[m][column] == 0) moreMoves++;
-                            else break;
-                        }
-                    }
-                    if (moreMoves != 0) score += calculateScore(aiScore, moreMoves);
-                    aiScore = 1;
-                    blanks = 0;
-                }
-
-                if (j >= 3) {
-                    for (k = 1; k < 4; ++k) {
-                        if (b.getBoard()[i][j - k] == 1) aiScore++;
-                        else if (b.getBoard()[i][j - k] == 2) {
-                            aiScore = 0;
-                            blanks = 0;
-                            break;
-                        } else blanks++;
-                    }
-                    moreMoves = 0;
-                    if (blanks > 0)
-                        for (int c = 1; c < 4; ++c) {
-                            int column = j - c;
-                            for (int m = i; m <= 5; m++) {
-                                if (b.getBoard()[m][column] == 0) moreMoves++;
-                                else break;
-                            }
-                        }
-
-                    if (moreMoves != 0) score += calculateScore(aiScore, moreMoves);
-                    aiScore = 1;
-                    blanks = 0;
-                }
-
-                if (j <= 3 && i >= 3) {
-                    for (k = 1; k < 4; ++k) {
-                        if (b.getBoard()[i - k][j + k] == 1) aiScore++;
-                        else if (b.getBoard()[i - k][j + k] == 2) {
-                            aiScore = 0;
-                            blanks = 0;
-                            break;
-                        } else blanks++;
-                    }
-                    moreMoves = 0;
-                    if (blanks > 0) {
-                        for (int c = 1; c < 4; ++c) {
-                            int column = j + c, row = i - c;
-                            for (int m = row; m <= 5; ++m) {
-                                if (b.getBoard()[m][column] == 0) moreMoves++;
-                                else if (b.getBoard()[m][column] == 1) ;
-                                else break;
-                            }
-                        }
-                        if (moreMoves != 0) score += calculateScore(aiScore, moreMoves);
-                        aiScore = 1;
-                        blanks = 0;
-                    }
-                }
-
-                if (i >= 3 && j >= 3) {
-                    for (k = 1; k < 4; ++k) {
-                        if (b.getBoard()[i - k][j - k] == 1) aiScore++;
-                        else if (b.getBoard()[i - k][j - k] == 2) {
-                            aiScore = 0;
-                            blanks = 0;
-                            break;
-                        } else blanks++;
-                    }
-                    moreMoves = 0;
-                    if (blanks > 0) {
-                        for (int c = 1; c < 4; ++c) {
-                            int column = j - c, row = i - c;
-                            for (int m = row; m <= 5; ++m) {
-                                if (b.getBoard()[m][column] == 0) moreMoves++;
-                                else if (b.getBoard()[m][column] == 1) ;
-                                else break;
-                            }
-                        }
-                        if (moreMoves != 0) score += calculateScore(aiScore, moreMoves);
-                        aiScore = 1;
-                        blanks = 0;
-                    }
-                }
+    /**
+     * This method implements the minimax algorithm. It returns either the
+     * highest minimax value that is possible for the max player
+     * starting from the passed board state or the lowest minimax value
+     * that is possible for the min player starting from the passed board
+     * state. It also modifies the global variable maxColumn that is
+     * associated to the column with the highest minimax value.
+     */
+    private int miniMaxValue(Board board, int depth, int playerToMove)
+    {
+        board.printBoard(board.getBoard());
+        //check if the board is in a terminal (winning) state and
+        //return the maximum or minimum utility value (255 - depth or
+        //0 + depth) if the max player or min player is winning.
+        if (board.isFinished() != -1)
+        {
+            System.out.println("Player: " +playerToMove);
+            if (board.isFinished() == mySymbol) {
+                return 255 - depth;
+            } else {
+                return 0 + depth;
             }
         }
-        return score;
-    }
+        depth = depth + 1;
 
-    public int minimax(int depth, int turn){
-        int gameResult = b.gameResult(b);
-        if(gameResult==1)return Integer.MAX_VALUE;
-        else if(gameResult==2)return Integer.MIN_VALUE;
-        else if(gameResult==0)return 0;
-
-        if(depth==maxDepth)return evaluateBoard(b);
-
-        int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
-        for(int j=0;j<=6;++j){
-            if(!b.isLegalMove(j)) continue;
-
-            if(turn==1){
-                b.placeMove(j, 1);
-                int currentScore = minimax(depth+1, 2);
-                maxScore = Math.max(currentScore, maxScore);
-                if(depth==0){
-                    System.out.println("Score for location "+j+" = "+currentScore);
-                    if(maxScore==currentScore) nextMoveLocation = j;
+        if (playerToMove == mySymbol) {
+            int max = Integer.MIN_VALUE;
+            int column = 0;
+            for (int i = 0; i < board.columns; i++)
+                if (board.isLegalMove(i)) {
+                    board.insert(i, mySymbol);
+                    int value = miniMaxValue(board, depth, opponentSymbol);
+                    if (max < value) {
+                        max = value;
+                        column = i;
+                    }
+                    board.remove(i);
                 }
-            }else if(turn==2){
-                b.placeMove(j, 2);
-                int currentScore = minimax(depth+1, 1);
-                minScore = Math.min(currentScore, minScore);
-            }
-            b.undoMove(j);
+            maxColumn = column;
+            System.out.println("Max: " +max);
+            return max;
+        } else {
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < board.columns; i++)
+                if (board.isLegalMove(i)) {
+                    board.insert(i, opponentSymbol);
+                    int value = miniMaxValue(board, depth, mySymbol);
+                    if (min > value)
+                        min = value;
+                    board.remove(i);
+                }
+            System.out.println("Min: " +min);
+            return min;
         }
-        return turn==1?maxScore:minScore;
     }
-    public void startMinimax()
-    {//
-        while(true){
-            letOpponentMove();
-            b.printBoard(b.getBoard());
-
-            int gameResult = b.gameResult(b);
-            if(gameResult==1){System.out.println("AI Wins!");break;}
-            else if(gameResult==2){System.out.println("You Win!");break;}
-            else if(gameResult==0){System.out.println("Draw!");break;}
-
-            b.placeMove(getAIMove(), 2);
-            gameResult = b.gameResult(b);
-            if(gameResult==1){System.out.println("AI Wins!");break;}
-            else if(gameResult==2){System.out.println("You Win!");break;}
-            else if(gameResult==0){System.out.println("Draw!");break;}
-        }
-
-    }
-    public int getAIMove(){
-        nextMoveLocation = -1;
-        minimax(0, 1);
-        return nextMoveLocation;
-    }
-
 }
-

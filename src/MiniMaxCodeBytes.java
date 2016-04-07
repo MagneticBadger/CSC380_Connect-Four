@@ -278,7 +278,7 @@ public class MiniMaxCodeBytes {
             else if(gameResult==0){System.out.println("Draw!");break;}
 
             b.placeMove(getAIMove(), 1);
-            b.printBoard(b);
+            b.printBoard();
             gameResult = gameResult(b);
             if(gameResult==1){System.out.println("AI 1 Wins!");break;}
             else if(gameResult==2){System.out.println("AI 2 Wins!");break;}

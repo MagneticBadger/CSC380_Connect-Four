@@ -15,6 +15,10 @@ public class boardGeneration extends Connect4 {
     private int[] rowCol = new int[2];
     private int players = 1;
 
+    public int[][] boardGeneration(Board board) {
+        this.board = board;
+    }
+
     public boolean generateBoard(int pieces) throws IOException {
         boolean p1 = true;
         boolean win=false;
@@ -37,9 +41,9 @@ public class boardGeneration extends Connect4 {
                 return win;
             }
                 col = rand.nextInt();
-            }
-        //printBoard(board);
-        return board;
+        }
+//        printBoard(board);
+        return win;
     }
 
     /**
