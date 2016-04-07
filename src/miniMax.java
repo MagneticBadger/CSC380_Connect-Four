@@ -23,8 +23,9 @@ public class miniMax
      * column that corresponds to the column with the highest minimax
      * value.
      */
-    public int miniMaxDecision(Board board) {
-        miniMaxValue(board, 0, mySymbol);
+    public int miniMaxDecision(Board board)
+    {
+        miniMaxValue(board, 0, opponentSymbol);
         return maxColumn;
     }
 

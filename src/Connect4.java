@@ -17,48 +17,31 @@ public class Connect4
         board = b.runBoard();
         currentPlayer=1;
         Random rand = new Random();
+        System.out.println("INITAL BOARD");
         b.printBoard(board);
         miniMax miniMax= new miniMax(30000000,b);
-        do {
-            int column=0;
-            if (currentPlayer == 1)
+        int column=0;
+        while(b.isFinished()==-1)
+        {
+            if(currentPlayer==1)
             {
+                System.out.println("After player 1");
+
+                column = (rand.nextInt() * 100) % 6;
+            }
+            else
+            {
+                System.out.println("After player 2");
                 column = miniMax.miniMaxDecision(b);
-            } else
+            }
+            while(!b.insert(column,currentPlayer))
             {
                 column = (rand.nextInt() * 100) % 6;
             }
-            while(!b.insert(column, currentPlayer))
-                column = (rand.nextInt()*100)%6;
             b.printBoard(board);
             changePlayer();
-            winner = b.isFinished();
+            winner =b.isFinished();
         }
-        while (winner == -1);
-            System.out.println(winner);
-
-//        while(b.isFinished()==-1)
-//        {
-//            if(b.isFinished()==1)
-//            {
-//                winner=1;
-//                break;
-//            }
-//            else if(b.isFinished()==2)
-//            {
-//                winner=2;
-//                break;
-//            }
-//            else
-//            {
-//                int column = 0;
-//                column = miniMax.miniMaxDecision(b);
-//                b.insert(column, currentPlayer);
-//                b.printBoard(board);
-//                changePlayer();
-//            }
-//
-//        }
     }
     public static void changePlayer()
     {

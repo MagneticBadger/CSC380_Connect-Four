@@ -80,17 +80,27 @@ public class Board
     }
 
     public boolean isLegalMove(int column) {
-        if (column > 6 || column < 0 || board[0][column] != 0)
+
+        if (column > 6 || column < 0)
             return false;
-        return true;
+        else
+        {
+            for (int i = 0; i<=rows-1; i++)
+                if (board[i][column] == 0)
+                {
+                    break;
+                }
+            return true;
+        }
     }
 
     public boolean insert(int column, int currentPlayer) {
-        if (column > 6 || column < 0 || board[0][column] != 0)
+        if (column > 6 || column < 0)
             return false;
         else {
-            for (int i = rows-1; i >= 0; i--)
-                if (board[i][column] == 0) {
+            for (int i = 0; i<=rows-1; i++)
+                if (board[i][column] == 0)
+                {
                     board[i][column] = currentPlayer;
                     break;
                 }
@@ -99,7 +109,7 @@ public class Board
     }
 
     public void remove(int column) {
-        for (int i = 0; i < rows; i++) {
+        for (int i = rows; 0 < i; i--) {
             if (getBoard()[i][column] != 0) {
                 getBoard()[i][column] = 0;
                 break;
