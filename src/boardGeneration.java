@@ -39,7 +39,7 @@ public class boardGeneration extends Connect4 {
                 col = rand.nextInt();
             }
         //printBoard(board);
-        return win;
+        return board;
     }
 
     /**
