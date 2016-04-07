@@ -18,10 +18,8 @@ public class Connect4
             int piecesInBoard=0;
             boardNumber++;
             b = new Board(bGenerator.generateBoard(32));
-
-            b.printBoard();
             MiniMaxCodeBytes minimax = new MiniMaxCodeBytes(b);
             minimax.play();
             //System.out.println("Board Number: " +boardNumber + "\tPieces in board: " + piecesInBoard);
-        }
+    }
     }

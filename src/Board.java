@@ -31,10 +31,17 @@ public class Board
         {
             if(board[i][column] == 0) {
                 board[i][column] = player;
-                printBoard();
                 return true;
             }
         }
+        return false;
+    }
+    public boolean placeMoveMiniMac(int row,int column, int player)
+    {
+            if(board[row][column] == 0) {
+                board[row][column] = player;
+                return true;
+            }
         return false;
     }
 
@@ -47,6 +54,14 @@ public class Board
                 return true;
             }
         }
+        return false;
+    }
+    public boolean isLegalMove(int row,int column)
+    {
+            if (board[row][column]==0)
+            {
+                return true;
+            }
         return false;
     }
     public int findRow(int column)
@@ -69,6 +84,13 @@ public class Board
                 break;
             }
         }
+    }
+    public void undoMoveMiniMax(int row,int column)
+    {
+           if(board[row][column] != 0)
+           {
+                board[row][column] = 0;
+            }
     }
     public void printBoard()
     {
