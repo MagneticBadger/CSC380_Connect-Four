@@ -27,56 +27,16 @@ public class Board
         setBoard(b.getBoard());
         return getBoard();
     }
-
-    public int isFinished()
-    {
-        System.out.println();
-        //check for win horizontally
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns - 3; col++) {
-                if (board[row][col] != 0 &&
-                        board[row][col] == board[row][col + 1] &&
-                        board[row][col] == board[row][col + 2] &&
-                        board[row][col] == board[row][col + 3]) {
-                    return board[row][col];
-                }
+    //Placing a Move on the board
+    public boolean placeMove(int column, int player){
+        if(!isLegalMove(column)) {System.out.println("Illegal move!"); return false;}
+        for(int i=5;i>=0;--i){
+            if(board[i][column] == 0) {
+                board[i][column] = (byte)player;
+                return true;
             }
         }
-
-        //check for win vertically
-        for (int row = 0; row < rows - 3; row++) {
-            for (int col = 0; col < columns; col++) {
-                if (board[row][col] != 0 &&
-                        board[row][col] == board[row + 1][col] &&
-                        board[row][col] == board[row + 2][col] &&
-                        board[row][col] == board[row + 3][col]) {
-                    return board[row][col];
-                }
-            }
-        }
-        //check for win diagonally (upper left to lower right)
-        for (int row = 0; row < rows - 3; row++) {
-            for (int col = 0; col < columns - 3; col++) {
-                if (board[row][col] != 0 &&
-                        board[row][col] == board[row + 1][col + 1] &&
-                        board[row][col] == board[row + 2][col + 2] &&
-                        board[row][col] == board[row + 3][col + 3]) {
-                    return board[row][col];
-                }
-            }
-        }
-        //check for win diagonally (lower left to upper right)
-        for (int row = 3; row < rows; row++) {
-            for (int col = 0; col < columns - 3; col++) {
-                if (board[row][col] != 0 &&
-                        board[row][col] == board[row - 1][col + 1] &&
-                        board[row][col] == board[row - 2][col + 2] &&
-                        board[row][col] == board[row - 3][col + 3]) {
-                    return board[row][col];
-                }
-            }
-        }
-        return -1;
+        return false;
     }
 
     public boolean isLegalMove(int column) {
@@ -93,28 +53,73 @@ public class Board
             return true;
         }
     }
-
-    public boolean insert(int column, int currentPlayer) {
-        if (column > 6 || column < 0)
-            return false;
-        else {
-            for (int i = 0; i<=rows-1; i++)
-                if (board[i][column] == 0)
-                {
-                    board[i][column] = currentPlayer;
-                    break;
-                }
-            return true;
-        }
-    }
-
-    public void remove(int column) {
-        for (int i = rows; 0 < i; i--) {
-            if (getBoard()[i][column] != 0) {
-                getBoard()[i][column] = 0;
+    public void undoMove(int column){
+        for(int i=0;i<=5;++i){
+            if(board[i][column] != 0) {
+                board[i][column] = 0;
                 break;
             }
         }
+    }
+    //Game Result
+    public int gameResult(Board b){
+        int aiScore = 0, humanScore = 0;
+        for(int i=5;i>=0;--i){
+            for(int j=0;j<=6;++j){
+                if(b.board[i][j]==0) continue;
+
+                //Checking cells to the right
+                if(j<=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i][j+k]==1) aiScore++;
+                        else if(b.board[i][j+k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking cells up
+                if(i>=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j]==1) aiScore++;
+                        else if(b.board[i-k][j]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking diagonal up-right
+                if(j<=3 && i>= 3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j+k]==1) aiScore++;
+                        else if(b.board[i-k][j+k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking diagonal up-left
+                if(j>=3 && i>=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j-k]==1) aiScore++;
+                        else if(b.board[i-k][j-k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+            }
+        }
+
+        for(int j=0;j<7;++j){
+            //Game has not ended yet
+            if(b.board[0][j]==0)return -1;
+        }
+        //Game draw!
+        return -1;
     }
     public void printBoard(int[][] board)
     {
