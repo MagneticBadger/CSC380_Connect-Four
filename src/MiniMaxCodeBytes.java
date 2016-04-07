@@ -17,17 +17,15 @@ public class MiniMaxCodeBytes {
 
     //Opponent's turn
     public void letOpponentMove(){
-        System.out.println("Your move (1-7): ");
-        int move = rand.nextInt();
+
+        int move = rand.nextInt(6)+1;
         while(move<1 || move > 7 || !b.isLegalMove(move-1)){
-            move = rand.nextInt();
+            move = rand.nextInt(6)+1;
         }
 
         //Assume 2 is the opponent
         b.placeMove(move-1, 2);
     }
-
-
 
     //Game Result
     public int gameResult(Board b){
@@ -257,32 +255,55 @@ public class MiniMaxCodeBytes {
         return nextMoveLocation;
     }
 
+    /**
+     * Algorithm player is equal to 1
+     * Simple reflex agent as random Generator is 2
+     */
     public void play(){
         int humanMove=-1;
-//        Scanner scan = new Scanner(System.in);
-//        System.out.println("Would you like to play first? (yes/no) ");
-        String answer = "yes";
+        int player;
+        Random rand = new Random();
+        player = rand.nextInt(10);
+//        if(player<5) {
+//            player = 1;
+//            letOpponentMove();
+//        }
+//        else
+//            player = 2;
 
-        if(answer.equalsIgnoreCase("yes")) letOpponentMove();
-        b.printBoard();
-        b.placeMove(3, 1);
-        b.printBoard();
-
-        while(true){
+        while(true)
+        {
             letOpponentMove();
             b.printBoard();
 
             int gameResult = gameResult(b);
-            if(gameResult==1){System.out.println("AI 1 Wins!");break;}
-            else if(gameResult==2){System.out.println("AI 2 Wins!");break;}
-            else if(gameResult==0){System.out.println("Draw!");break;}
+            if (gameResult == 1) {
+                System.out.println("AI 1 Wins!");
+                break;
+            } else if (gameResult == 2) {
+                System.out.println("AI 2 Wins!");
+                break;
+            } else if (gameResult == 0) {
+                System.out.println("Draw!");
+                break;
+            }
 
             b.placeMove(getAIMove(), 1);
             b.printBoard();
             gameResult = gameResult(b);
-            if(gameResult==1){System.out.println("AI 1 Wins!");break;}
-            else if(gameResult==2){System.out.println("AI 2 Wins!");break;}
-            else if(gameResult==0){System.out.println("Draw!");break;}
+            if(gameResult==1)
+            {
+                System.out.println("AI 1 Wins!");
+                break;
+            }
+            else if(gameResult==2){
+                System.out.println("AI 2 Wins!");
+                break;
+            }
+            else if(gameResult==0){
+                System.out.println("Draw!");
+                break;
+            }
         }
 
     }

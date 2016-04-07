@@ -172,7 +172,7 @@ public class miniMax
     }
 
     public int minimax(int depth, int turn){
-        int gameResult = b.gameResult(b);
+        int gameResult = gameResult(b);
         if(gameResult==1)return Integer.MAX_VALUE;
         else if(gameResult==2)return Integer.MIN_VALUE;
         else if(gameResult==0)return 0;
@@ -206,13 +206,13 @@ public class miniMax
             letOpponentMove();
             b.printBoard();
 
-            int gameResult = b.gameResult(b);
+            int gameResult = gameResult(b);
             if(gameResult==1){System.out.println("AI Wins!");break;}
             else if(gameResult==2){System.out.println("You Win!");break;}
             else if(gameResult==0){System.out.println("Draw!");break;}
 
             b.placeMove(getAIMove(), 2);
-            gameResult = b.gameResult(b);
+            gameResult = gameResult(b);
             if(gameResult==1){System.out.println("AI Wins!");break;}
             else if(gameResult==2){System.out.println("You Win!");break;}
             else if(gameResult==0){System.out.println("Draw!");break;}
@@ -223,6 +223,66 @@ public class miniMax
         nextMoveLocation = -1;
         minimax(0, 1);
         return nextMoveLocation;
+    }
+        //Game Result
+    public int gameResult(Board b){
+        int aiScore = 0, humanScore = 0;
+        for(int i=5;i>=0;--i){
+            for(int j=0;j<=6;++j){
+                if(b.board[i][j]==0) continue;
+
+                //Checking cells to the right
+                if(j<=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i][j+k]==1) aiScore++;
+                        else if(b.board[i][j+k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking cells up
+                if(i>=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j]==1) aiScore++;
+                        else if(b.board[i-k][j]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking diagonal up-right
+                if(j<=3 && i>= 3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j+k]==1) aiScore++;
+                        else if(b.board[i-k][j+k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+
+                //Checking diagonal up-left
+                if(j>=3 && i>=3){
+                    for(int k=0;k<4;++k){
+                        if(b.board[i-k][j-k]==1) aiScore++;
+                        else if(b.board[i-k][j-k]==2) humanScore++;
+                        else break;
+                    }
+                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
+                    aiScore = 0; humanScore = 0;
+                }
+            }
+        }
+
+        for(int j=0;j<7;++j){
+            //Game has not ended yet
+            if(b.board[0][j]==0)return -1;
+        }
+        //Game draw!
+        return -1;
     }
 
 }

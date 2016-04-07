@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -10,23 +12,11 @@ public class Board
     public int[][] board;
     final static int boardPieces = 32;
 
-    public int[][] runBoard() throws IOException
+    public Board(int[][] board)
     {
-        boolean win;
-        boardGeneration b = new boardGeneration();
-
-        win = b.generateBoard(boardPieces);
-        while (win) {
-            b.clearboard();
-            win = b.generateBoard(boardPieces);
-            if (!win) {
-                break;
-            }
-        }
-        b.boardWriter(b.getBoard());
-        setBoard(b.getBoard());
-        return getBoard();
+        this.board =board;
     }
+
     //Placing a Move on the board
     public boolean placeMove(int column, int player){
         if(!isLegalMove(column)) {System.out.println("Illegal move!"); return false;}
@@ -39,19 +29,9 @@ public class Board
         return false;
     }
 
-    public boolean isLegalMove(int column) {
-
-        if (column > 6 || column < 0)
-            return false;
-        else
-        {
-            for (int i = 0; i<=rows-1; i++)
-                if (board[i][column] == 0)
-                {
-                    break;
-                }
-            return true;
-        }
+    public boolean isLegalMove(int column)
+    {
+        return board[0][column]==0;
     }
     public void undoMove(int column){
         for(int i=0;i<=5;++i){
@@ -61,66 +41,7 @@ public class Board
             }
         }
     }
-    //Game Result
-    public int gameResult(Board b){
-        int aiScore = 0, humanScore = 0;
-        for(int i=5;i>=0;--i){
-            for(int j=0;j<=6;++j){
-                if(b.board[i][j]==0) continue;
 
-                //Checking cells to the right
-                if(j<=3){
-                    for(int k=0;k<4;++k){
-                        if(b.board[i][j+k]==1) aiScore++;
-                        else if(b.board[i][j+k]==2) humanScore++;
-                        else break;
-                    }
-                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
-                    aiScore = 0; humanScore = 0;
-                }
-
-                //Checking cells up
-                if(i>=3){
-                    for(int k=0;k<4;++k){
-                        if(b.board[i-k][j]==1) aiScore++;
-                        else if(b.board[i-k][j]==2) humanScore++;
-                        else break;
-                    }
-                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
-                    aiScore = 0; humanScore = 0;
-                }
-
-                //Checking diagonal up-right
-                if(j<=3 && i>= 3){
-                    for(int k=0;k<4;++k){
-                        if(b.board[i-k][j+k]==1) aiScore++;
-                        else if(b.board[i-k][j+k]==2) humanScore++;
-                        else break;
-                    }
-                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
-                    aiScore = 0; humanScore = 0;
-                }
-
-                //Checking diagonal up-left
-                if(j>=3 && i>=3){
-                    for(int k=0;k<4;++k){
-                        if(b.board[i-k][j-k]==1) aiScore++;
-                        else if(b.board[i-k][j-k]==2) humanScore++;
-                        else break;
-                    }
-                    if(aiScore==4)return 1; else if (humanScore==4)return 2;
-                    aiScore = 0; humanScore = 0;
-                }
-            }
-        }
-
-        for(int j=0;j<7;++j){
-            //Game has not ended yet
-            if(b.board[0][j]==0)return -1;
-        }
-        //Game draw!
-        return -1;
-    }
     public void printBoard()
     {
         String s = (char)27 + "[36mbla-bla-bla";
@@ -156,6 +77,28 @@ public class Board
             System.out.print(g+1+" ");
         }
         System.out.println("Col");
+    }
+    public void boardWriter(int[][] board, int counter) throws IOException
+    {
+        File file = new File("boards.txt");
+        if(!file.createNewFile()) {
+            file.delete();
+        }
+        file.createNewFile();
+        FileWriter writer = new FileWriter(file,true);
+        writer.append(counter + ":\n");
+        for (int f = board.length - 1; 0 <= f; f--) {
+
+            for (int k = 0; k < board[f].length; k++)
+            {
+                writer.append(board[f][k] + " ");
+            }
+            writer.append("\n");
+        }
+        writer.append("\n");
+        writer.flush();
+        writer.close();
+        counter++;
     }
 
     public int[][] getBoard() {
