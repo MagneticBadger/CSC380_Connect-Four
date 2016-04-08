@@ -6,7 +6,7 @@ import java.util.Random;
 public class MiniMaxCodeBytes {
 
     private Board b;
-//    private Scanner scan;
+//    private Scanner scan
     Random rand = new Random();
     private int nextMoveLocation=-1;
     private int maxDepth = 7;
