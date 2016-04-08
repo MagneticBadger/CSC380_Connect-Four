@@ -21,7 +21,7 @@ public class Connect4 {
 
         int piecesInBoard = 0;
         boardNumber++;
-        b = new Board(bGenerator.generateBoard(16));
+        b = new Board(bGenerator.generateBoard(12));
         long startTime = System.currentTimeMillis();
         MiniMaxCodeBytes minimax = new MiniMaxCodeBytes(b);
         minimax.play();

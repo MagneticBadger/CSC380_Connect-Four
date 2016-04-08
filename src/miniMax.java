@@ -9,7 +9,7 @@ public class miniMax
     private Board b;
     private Random rand;
     private int nextMoveLocation=-1;
-    private int maxDepth = 8;
+    private int maxDepth = 7;
 
     public miniMax(Board b){
         this.b = b;

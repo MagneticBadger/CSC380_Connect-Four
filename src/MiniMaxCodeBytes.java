@@ -235,7 +235,7 @@ public class MiniMaxCodeBytes {
 
         int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
         for(int j=0;j<7;++j) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 6; i++) {
                 if (!b.isLegalMove(i,j)) continue;
                 if (turn == 1) {
                     b.placeMoveMiniMac(i,j, 1);
