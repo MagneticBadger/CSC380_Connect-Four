@@ -9,7 +9,7 @@ public class MiniMaxCodeBytes {
 //    private Scanner scan;
     Random rand = new Random();
     private int nextMoveLocation=-1;
-    private int maxDepth = 15;
+    private int maxDepth = 7;
 
     public MiniMaxCodeBytes(Board b)
     {
@@ -82,9 +82,13 @@ public class MiniMaxCodeBytes {
             }
         }
 
-        for(int j=0;j<7;++j){
+        for(int j=0;j<7;++j)
+        {
+            for (int i = 0; i < 6; i++) {
+                if(b.getBoard()[j][i]==0)return -99;
+            }
             //Game has not ended yet
-            if(b.getBoard()[0][j]==0)return -99;
+
         }
         //Game draw!
         return 0;

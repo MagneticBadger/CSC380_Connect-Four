@@ -10,7 +10,7 @@ public class Board
     public final int rows = 6;
     public final int columns = 7;
     public int[][] board;
-    final static int boardPieces = 32;
+    final static int boardPieces = 20;
     int[] rowsEdited =new int[42];
 
     public Board(int[][] board)
