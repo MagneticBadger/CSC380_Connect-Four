@@ -13,7 +13,7 @@ public class Connect4 {
     public static int test = 100;
     private static Board b;
     private static boardGeneration bGenerator = new boardGeneration();
-    private String algorithmName = "MiniMax";
+    private String algorithmName = "MiniMaxCodeBytes";
 
     public static void main(String[] args) throws IOException {
         double numberOfWins, time, space, numberOfMoves;
@@ -21,7 +21,8 @@ public class Connect4 {
 
         int piecesInBoard = 0;
         boardNumber++;
-        b = new Board(bGenerator.generateBoard(12));
+        b = new Board(bGenerator.generateBoard(16));
+
         long startTime = System.currentTimeMillis();
         MiniMaxCodeBytes minimax = new MiniMaxCodeBytes(b);
         minimax.play();
@@ -30,9 +31,23 @@ public class Connect4 {
         long millis = endTime - startTime;
         int seconds = (int) (millis / 1000) % 60;
         int minutes = (int) ((millis / (1000 * 60)) % 60);
-        System.out.print(minutes + ":" + seconds);
+        System.out.print(minutes + ":" + seconds + "\n");
 
         //System.out.println("Board Number: " +boardNumber + "\tPieces in board: " + piecesInBoard);
+
+        Board b2 = new Board(bGenerator.generateBoard(16));
+
+        startTime = System.currentTimeMillis();
+        AlphaBeta alphabeta = new AlphaBeta(b2);
+        alphabeta.play();
+        endTime = System.currentTimeMillis();
+
+        millis = endTime - startTime;
+        seconds = (int) (millis / 1000) % 60;
+        minutes = (int) ((millis / (1000 * 60)) % 60);
+        System.out.print(minutes + ":" + seconds);
+
+
     }
 
     public void dataWriter(double numberOfWins, double time, double space, double numberOfMoves) throws IOException {

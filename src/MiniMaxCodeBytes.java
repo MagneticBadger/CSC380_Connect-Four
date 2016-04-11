@@ -9,7 +9,7 @@ public class MiniMaxCodeBytes {
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation=-1;
-    private int maxDepth = 7;
+    private int maxDepth = 6;
 
     public MiniMaxCodeBytes(Board b)
     {
@@ -234,7 +234,7 @@ public class MiniMaxCodeBytes {
         if(depth==maxDepth)return evaluateBoard(b);
 
         int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
-        for(int j=0;j<7;++j) {
+        for (int j = 0; j < 7; j++) {
             for (int i = 0; i < 6; i++) {
                 if (!b.isLegalMove(i,j)) continue;
                 if (turn == 1) {
@@ -292,7 +292,7 @@ public class MiniMaxCodeBytes {
             b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMax Wins!");
+                System.out.println("MiniMaxCodeBytes Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
@@ -302,11 +302,11 @@ public class MiniMaxCodeBytes {
             }
             int inde=0;
             b.placeMove(inde = getAIMove(), 1);
-            System.out.println("After MiniMax ");
+            System.out.println("After MiniMaxCodeBytes ");
             b.printBoard();
             gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMax Wins!");
+                System.out.println("MiniMaxCodeBytes Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
