@@ -13,7 +13,7 @@ public class Connect4 {
     public static int test = 100;
     private static Board b;
     private static boardGeneration bGenerator = new boardGeneration();
-    private String algorithmName = "MiniMaxCodeBytes";
+    private String algorithmName = "MiniMax";
 
     public static void main(String[] args) throws IOException {
         double numberOfWins, time, space, numberOfMoves;
@@ -24,7 +24,7 @@ public class Connect4 {
         b = new Board(bGenerator.generateBoard(16));
 
         long startTime = System.currentTimeMillis();
-        MiniMaxCodeBytes minimax = new MiniMaxCodeBytes(b);
+        MiniMax minimax = new MiniMax(b);
         minimax.play();
         long endTime = System.currentTimeMillis();
 

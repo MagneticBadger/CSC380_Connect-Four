@@ -3,7 +3,7 @@ import java.util.Random;
 /**
  * Created by Michael Suggs on 4/7/16.
  */
-public class MiniMaxCodeBytes {
+public class MiniMax {
 
     private Board b;
     //    private Scanner sca
@@ -11,7 +11,7 @@ public class MiniMaxCodeBytes {
     private int nextMoveLocation=-1;
     private int maxDepth = 6;
 
-    public MiniMaxCodeBytes(Board b)
+    public MiniMax(Board b)
     {
         this.b = b;
     }
@@ -292,7 +292,7 @@ public class MiniMaxCodeBytes {
             b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMaxCodeBytes Wins!");
+                System.out.println("MiniMax Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
@@ -302,11 +302,11 @@ public class MiniMaxCodeBytes {
             }
             int inde=0;
             b.placeMove(inde = getAIMove(), 1);
-            System.out.println("After MiniMaxCodeBytes ");
+            System.out.println("After MiniMax ");
             b.printBoard();
             gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMaxCodeBytes Wins!");
+                System.out.println("MiniMax Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");

@@ -342,7 +342,7 @@ public class AlphaBeta {
             b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMaxCodeBytes Wins!");
+                System.out.println("MiniMax Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
@@ -352,11 +352,11 @@ public class AlphaBeta {
             }
             int inde = 0;
             b.placeMove(inde = getAIMove(), 1);
-            System.out.println("After MiniMaxCodeBytes ");
+            System.out.println("After MiniMax ");
             b.printBoard();
             gameResult = gameResult(b);
             if (gameResult == 1) {
-                System.out.println("MiniMaxCodeBytes Wins!");
+                System.out.println("MiniMax Wins!");
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
