@@ -15,33 +15,44 @@ public class Connect4 {
     private static boardGeneration bGenerator = new boardGeneration();
     private String algorithmName = "MiniMax";
 
-    public static void main(String[] args) throws IOException {
-        double numberOfWins, time, space, numberOfMoves;
+    public static void main(String[] args) throws IOException
+    {
+        int runNumber = 10;
+        double numberOfWins=0.0, time=0.0, space=0.0, numberOfMoves=0.0;
         Timer timer = new Timer();
+        long startTime;
+        long endTime;
 
         int piecesInBoard = 0;
         boardNumber++;
-        b = new Board(bGenerator.generateBoard(16));
+        while(runNumber !=0) {
+            b = new Board(bGenerator.generateBoard(12));
 
-        long startTime = System.currentTimeMillis();
-        MiniMax minimax = new MiniMax(b);
-        minimax.play();
-        long endTime = System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
+            MiniMax minimax = new MiniMax(b);
+            if (minimax.play() == true) ;
+            {
+                numberOfWins++;
+            }
+            endTime = System.currentTimeMillis();
 
-        long millis = endTime - startTime;
-        int seconds = (int) (millis / 1000) % 60;
-        int minutes = (int) ((millis / (1000 * 60)) % 60);
-        System.out.print(minutes + ":" + seconds + "\n");
-
+            long millis = endTime - startTime;
+            int seconds = (int) (millis / 1000) % 60;
+            int minutes = (int) ((millis / (1000 * 60)) % 60);
+            System.out.print(minutes + ":" + seconds + "Wins: " + numberOfWins + " runNumber: " + runNumber+"\n\n\n");
+            runNumber--;
+        }
         //System.out.println("Board Number: " +boardNumber + "\tPieces in board: " + piecesInBoard);
 
-        Board b2 = new Board(bGenerator.generateBoard(16));
+        Board b2 = new Board(bGenerator.generateBoard(12));
 
         startTime = System.currentTimeMillis();
         AlphaBeta alphabeta = new AlphaBeta(b2);
         alphabeta.play();
         endTime = System.currentTimeMillis();
-
+        long millis = endTime - startTime;
+        int seconds = (int) (millis / 1000) % 60;
+        int minutes = (int) ((millis / (1000 * 60)) % 60);
         millis = endTime - startTime;
         seconds = (int) (millis / 1000) % 60;
         minutes = (int) ((millis / (1000 * 60)) % 60);

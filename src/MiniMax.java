@@ -9,7 +9,7 @@ public class MiniMax {
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation=-1;
-    private int maxDepth = 6;
+    private int maxDepth = 5;
 
     public MiniMax(Board b)
     {
@@ -271,17 +271,13 @@ public class MiniMax {
      * Algorithm player is equal to 1
      * Simple reflex agent as random Generator is 2
      */
-    public void play(){
+    public boolean play(){
         int humanMove=-1;
         int player;
         Random rand = new Random();
         player = rand.nextInt(10);
-//        if(player<5) {
-//            player = 1;
-//            letOpponentMove();
-//        }
-//        else
-//            player = 2;
+        boolean miniMaxWinner;
+
 
         while(true)
         {
@@ -293,11 +289,14 @@ public class MiniMax {
             int gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
+                miniMaxWinner=true;
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
+                miniMaxWinner=false;
                 break;
-            } else if (gameResult == 0) {
+            } else if (gameResult == 0)
+            {
                 System.out.println("Draw!");
             }
             int inde=0;
@@ -307,15 +306,18 @@ public class MiniMax {
             gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
+                miniMaxWinner=true;
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
+                miniMaxWinner=false;
                 break;
-            } else if (gameResult == 0) {
+            } else if (gameResult == 0)
+            {
                 System.out.println("Draw!");
             }
         }
-
+        return miniMaxWinner;
     }
     public void printPlayerChange()
     {
