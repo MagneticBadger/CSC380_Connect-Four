@@ -10,6 +10,8 @@ public class MiniMax {
     Random rand = new Random();
     private int nextMoveLocation=-1;
     private int maxDepth = 5;
+    public int numberOfMoves=0;
+    private double heap=0;
 
     public MiniMax(Board b)
     {
@@ -27,6 +29,7 @@ public class MiniMax {
 
         //Assume 2 is the opponent
         b.placeMove(move, 2);
+        numberOfMoves++;
     }
 
     //Game Result
@@ -231,11 +234,23 @@ public class MiniMax {
         else if(gameResult==2)return Integer.MIN_VALUE;
         //else if(gameResult==0)return 0;
 
-        if(depth==maxDepth)return evaluateBoard(b);
+        if(depth==maxDepth)
+        {
+            double temp = 0;
+            temp = Runtime.getRuntime().totalMemory();
+            if(temp>heap)
+            {
+                heap =temp;
+            }
+            System.out.println(temp/1024);
+            return evaluateBoard(b);
+        }
 
         int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
-        for (int j = 0; j < 7; j++) {
-            for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 7; j++)
+        {
+            for (int i = 0; i < 6; i++)
+            {
                 if (!b.isLegalMove(i,j)) continue;
                 if (turn == 1) {
                     b.placeMoveMiniMac(i,j, 1);
@@ -248,9 +263,11 @@ public class MiniMax {
                             nextMoveLocation = j;
                         }
                     }
-                } else if (turn == 2)
+                }
+                else if (turn == 2)
                 {
                     b.placeMoveMiniMac(i,j, 2);
+
                     int currentScore = minimax(depth + 1, 1);
                     minScore = Math.min(currentScore, minScore);
                 }
@@ -264,6 +281,7 @@ public class MiniMax {
     {
         nextMoveLocation = -1;
         minimax(0, 1);
+        numberOfMoves++;
         return nextMoveLocation;
     }
 
@@ -276,9 +294,7 @@ public class MiniMax {
         int player;
         Random rand = new Random();
         player = rand.nextInt(10);
-        boolean miniMaxWinner;
-
-
+        boolean miniMaxWinner=false;
         while(true)
         {
             System.out.println("This is the inital board state ");
@@ -324,4 +340,11 @@ public class MiniMax {
 
     }
 
+    public int getNumberOfMoves() {
+        return numberOfMoves;
+    }
+
+    public double getHeap() {
+        return heap;
+    }
 }

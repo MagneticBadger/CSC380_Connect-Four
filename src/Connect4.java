@@ -30,7 +30,8 @@ public class Connect4 {
 
             startTime = System.currentTimeMillis();
             MiniMax minimax = new MiniMax(b);
-            if (minimax.play() == true) ;
+            boolean winner = minimax.play();
+            if (winner)
             {
                 numberOfWins++;
             }
@@ -39,7 +40,8 @@ public class Connect4 {
             long millis = endTime - startTime;
             int seconds = (int) (millis / 1000) % 60;
             int minutes = (int) ((millis / (1000 * 60)) % 60);
-            System.out.print(minutes + ":" + seconds + "Wins: " + numberOfWins + " runNumber: " + runNumber+"\n\n\n");
+            System.out.print(minutes + ":" + seconds + "Wins: " + numberOfWins + " runNumber: " + runNumber+
+                            "Number Of Moves" + minimax.getNumberOfMoves()+ "Size: "+ (minimax.getHeap()/1024)/1024+ "\n\n\n");
             runNumber--;
         }
         //System.out.println("Board Number: " +boardNumber + "\tPieces in board: " + piecesInBoard);
