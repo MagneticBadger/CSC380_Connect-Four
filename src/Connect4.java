@@ -6,7 +6,8 @@ import java.util.Timer;
 /**
  * Created by krm1929 on 3/2/2016.
  */
-public class Connect4 {
+public class Connect4
+{
     //    public static int currentPlayer;
 //    static int winner = 0;
     public static int boardNumber = 0;
@@ -41,8 +42,9 @@ public class Connect4 {
             int seconds = (int) (millis / 1000) % 60;
             int minutes = (int) ((millis / (1000 * 60)) % 60);
             System.out.print(minutes + ":" + seconds + "Wins: " + numberOfWins + " runNumber: " + runNumber+
-                            "Number Of Moves" + minimax.getNumberOfMoves()+ "Size: "+ (minimax.getHeap()/1024)/1024+ "\n\n\n");
+                            " Number Of Moves " + minimax.getNumberOfMoves()+ " Size: "+ minimax.getMemorySize()+ "\n\n\n");
             runNumber--;
+
         }
         //System.out.println("Board Number: " +boardNumber + "\tPieces in board: " + piecesInBoard);
 

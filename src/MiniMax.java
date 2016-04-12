@@ -11,7 +11,7 @@ public class MiniMax {
     private int nextMoveLocation=-1;
     private int maxDepth = 5;
     public int numberOfMoves=0;
-    private double heap=0;
+    private double memorySize =0;
 
     public MiniMax(Board b)
     {
@@ -237,12 +237,11 @@ public class MiniMax {
         if(depth==maxDepth)
         {
             double temp = 0;
-            temp = Runtime.getRuntime().totalMemory();
-            if(temp>heap)
+            temp = (Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory());
+            if(temp> memorySize)
             {
-                heap =temp;
+                setMemorySize(temp);
             }
-            System.out.println(temp/1024);
             return evaluateBoard(b);
         }
 
@@ -344,7 +343,12 @@ public class MiniMax {
         return numberOfMoves;
     }
 
-    public double getHeap() {
-        return heap;
+    public double getMemorySize()
+    {
+        return memorySize/1024/1024;
+    }
+
+    public void setMemorySize(double memorySize) {
+        this.memorySize = memorySize;
     }
 }
