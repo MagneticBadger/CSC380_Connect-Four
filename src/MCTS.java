@@ -3,6 +3,7 @@
  */
 public class MCTS
 {
+    /*
     Board b;
     public static int playOutsX = 3000; //adjust iterations for computer player 1
     public static int playOutsO = 3000; //adjust iterations for computer player 2
@@ -222,4 +223,5 @@ public class MCTS
             }
         }
     }
+    */
 }

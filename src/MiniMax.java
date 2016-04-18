@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -9,9 +10,12 @@ public class MiniMax {
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation=-1;
-    private int maxDepth = 5;
+    private int maxDepth = 3;
     public int numberOfMoves=0;
     private double memorySize =0;
+    public int childCount;
+    public int maxChildCount;
+    private ArrayList<Integer> runningChilTotal = new ArrayList<>();
 
     public MiniMax(Board b)
     {
@@ -236,9 +240,10 @@ public class MiniMax {
 
         if(depth==maxDepth)
         {
-            double temp = 0;
-            temp = (Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory());
-            if(temp> memorySize)
+            int temp =0;
+            //double temp = 0;
+            //temp = (Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory());
+            if(childCount > temp)
             {
                 setMemorySize(temp);
             }
@@ -246,13 +251,16 @@ public class MiniMax {
         }
 
         int maxScore=Integer.MIN_VALUE, minScore = Integer.MAX_VALUE;
+
         for (int j = 0; j < 7; j++)
         {
             for (int i = 0; i < 6; i++)
             {
                 if (!b.isLegalMove(i,j)) continue;
-                if (turn == 1) {
+                if (turn == 1)
+                {
                     b.placeMoveMiniMac(i,j, 1);
+                    childCount++;
                     int currentScore = minimax(depth + 1, 2);
                     maxScore = Math.max(currentScore, maxScore);
                     if (depth == 0)
@@ -265,12 +273,13 @@ public class MiniMax {
                 }
                 else if (turn == 2)
                 {
+                    childCount++;
                     b.placeMoveMiniMac(i,j, 2);
-
                     int currentScore = minimax(depth + 1, 1);
                     minScore = Math.min(currentScore, minScore);
                 }
                 b.undoMoveMiniMax(i,j);
+
             }
         }
         return turn==1?maxScore:minScore;
@@ -278,8 +287,15 @@ public class MiniMax {
 
     public int getAIMove()
     {
+
         nextMoveLocation = -1;
         minimax(0, 1);
+        if(childCount>maxChildCount)
+        {
+            maxChildCount=childCount;
+        }
+        getRunningChilTotal().add(childCount);
+        childCount=0;
         numberOfMoves++;
         return nextMoveLocation;
     }
@@ -296,18 +312,18 @@ public class MiniMax {
         boolean miniMaxWinner=false;
         while(true)
         {
-            System.out.println("This is the inital board state ");
-            b.printBoard();
+           // System.out.println("This is the inital board state ");
+            //b.printBoard();
             letOpponentMove();
-            System.out.println("After reflex Agent ");
-            b.printBoard();
+            //System.out.println("After reflex Agent ");
+            //b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
                 miniMaxWinner=true;
                 break;
             } else if (gameResult == 2) {
-                System.out.println("Simple Reflex Wins!");
+                System.out.println("Simple Reflex Wins");
                 miniMaxWinner=false;
                 break;
             } else if (gameResult == 0)
@@ -316,11 +332,13 @@ public class MiniMax {
             }
             int inde=0;
             b.placeMove(inde = getAIMove(), 1);
-            System.out.println("After MiniMax ");
-            b.printBoard();
+
+            //System.out.println("After MiniMax ");
+            //b.printBoard();
             gameResult = gameResult(b);
-            if (gameResult == 1) {
-                System.out.println("MiniMax Wins!");
+            if (gameResult == 1)
+            {
+                System.out.println("MiniMax Wins");
                 miniMaxWinner=true;
                 break;
             } else if (gameResult == 2) {
@@ -350,5 +368,13 @@ public class MiniMax {
 
     public void setMemorySize(double memorySize) {
         this.memorySize = memorySize;
+    }
+
+    public ArrayList<Integer> getRunningChilTotal() {
+        return runningChilTotal;
+    }
+
+    public void setRunningChilTotal(ArrayList<Integer> runningChilTotal) {
+        this.runningChilTotal = runningChilTotal;
     }
 }

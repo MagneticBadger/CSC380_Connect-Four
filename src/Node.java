@@ -7,6 +7,7 @@ import java.util.Random;
  */
 public class Node
 {
+    /*
         static Random randomNumb = new Random();
         static double buffer = 1e-6;
         static char opp;
@@ -292,5 +293,5 @@ public class Node
                 return selected;
             }
         }
-
+    */
     }

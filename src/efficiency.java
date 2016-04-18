@@ -23,11 +23,9 @@ public class Efficiency {
 
     public Efficiency(String name) throws IOException {
         this.algorithmName = name;
-        calculateEfficiency();
-        efficientWriter();
     }
 
-    private void calculateEfficiency() {
+    public void calculateEfficiency() {
         double runningSum = 0.0;
 
         for (int i = 0; i <= time.size(); i++) {
