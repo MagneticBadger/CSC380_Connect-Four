@@ -8,12 +8,14 @@ public class BruteForce
     public static Board b;
     public static int[][] board ;
     public static int player= 1;
+    private static int numberOfMoves=0;
     public BruteForce(Board b)
     {
         this.b =b;
         this.board  =b.board;
     }
-    public static int findFour() {
+    public static int findFour()
+    {
 
         int aiScore = 0, humanScore = 0;
         for(int i=5;i>=0;--i){
@@ -56,7 +58,7 @@ public class BruteForce
                     aiScore = 0; humanScore = 0;
                 }
 
-                //Checking diagonal up-left
+
                 if(j>=3 && i>=3){
                     for(int k=0;k<4;++k){
                         if(board[i-k][j-k]==1) aiScore++;
@@ -70,7 +72,8 @@ public class BruteForce
             }
         }
 
-        for(int j=0;j<7;++j){
+        for(int j=0;j<7;++j)
+        {
             //Game has not ended yet
             if(board[0][j]==0)return -1;
         }
@@ -97,71 +100,44 @@ public class BruteForce
     //outputs the board status to the screen
     //no return
 
-    public static void run()
+    public  int run()
     {
         Random rand = new Random();
-
+        boolean win=true;
         //initialize variables
         int winner=0;
 
-        //use do while cause you always want to execute once
-        do{
 
-            int row = rand.nextInt(6)+1;
-            while(row<1 || row > 7)
+        while (full(board)||win)
+        {
+            int col = rand.nextInt(7);
+
+            boolean notValid = b.placeMove(col,player);
+            while(!notValid)
             {
-                row = rand.nextInt(6)+1;
+                    col = rand.nextInt(7);
+                    notValid = b.placeMove(col,player);
             }
-
-            //try to place in the row wanted
-            //use row-1 for the actual array index starting at 0, not user input
-            boolean placed = b.placeMove(row,player);
-
-            //if you couldnt place it try again
-            while(!placed)
+            if(findFour()==-99)
             {
-                //if out of bounds
-                if(row>6 || row<0){
-                    System.out.println("Sorry the row is invalid");
-                }else{
-                    System.out.print("Sorry row "+ row +" is full.\n\nplease select a row:");
-                }
-
-                row = rand.nextInt(6)+1;
-                while(row<1 || row > 7)
-                {
-                    row = rand.nextInt(6)+1;
-                }
-
-                //try to place in the row wanted
-                //use row-1 for the actual array index starting at 0, not user input
-                placed = b.placeMove(row,player);
-
+                win= false ;
+                System.out.println("player " + player + "is the winner");
+                break;
             }
-            if(player == 1)
+            if(player==1)
             {
-                player = 2 ;
+                numberOfMoves = getNumberOfMoves() + 1;
+                player=2;
             }
             else
             {
-                player = 1;
+                player=1;
             }
-            //find winner if one exists
-            winner = findFour();
-
-            //print status
-            b.printBoard();
-
-            //stop when there are four in a row or its full
-        }while(!full(board) && winner==-1);
-
-        //print winner statement
-        if(winner==1){
-            System.out.println("Congradulations "+player+" You Won!!");
-        }else if(winner==0){
-            System.out.println("Congradulations "+player+" You Won!!");
-        }else{
-            System.out.println("Sorry, no one won.");
         }
+        return player;
+    }
+
+    public  int getNumberOfMoves() {
+        return numberOfMoves;
     }
 }

@@ -312,12 +312,9 @@ public class Greddy
         boolean miniMaxWinner=false;
         while(true)
         {
-            // System.out.println("This is the inital board state ");
-            //b.printBoard();
             int inde=0;
             b.placeMove(inde = getAIMove(), 1);
             //System.out.println("After reflex Agent ");
-            //b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
@@ -334,7 +331,6 @@ public class Greddy
 
             letOpponentMove();
             //System.out.println("After MiniMax ");
-            //b.printBoard();
             gameResult = gameResult(b);
             if (gameResult == 1)
             {

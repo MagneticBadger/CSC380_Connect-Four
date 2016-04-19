@@ -6,7 +6,8 @@ import java.util.Arrays;
 /**
  * Created by krm1929 on 4/6/2016.
  */
-public class Board {
+public class Board
+{
     public final int rows = 6;
     public final int columns = 7;
     public int[][] board;
@@ -21,7 +22,7 @@ public class Board {
     public boolean placeMove(int column, int player) {
 
         if (!isLegalMove(column)) {
-            System.out.println("Illegal move!");
+           // System.out.println("Illegal move!");
             return false;
         }
         for (int i = 0; i < 6; i++) {

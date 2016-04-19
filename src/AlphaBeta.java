@@ -10,7 +10,7 @@ public class AlphaBeta {
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation = -1;
-    private int maxDepth = 4;
+        private int maxDepth = 6;
     private int numberOfMoves = 0;
     private int childCount =0;
     private int maxChildCount =0;
