@@ -1,27 +1,73 @@
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
 /**
- * Created by krm1929 on 4/18/2016.
+ * Created by mjs3607 on 4/18/2016.
  */
-public class MCTS
+public class GameBoard
 {
-    /*
-    Board b;
+    public static Board b;
+    //Gameboard size dimensions
+    public static int rows = 6;
+    public static int columns = 7;
+    //Player that goes first
+    public static int turn = 2;
     public static int playOutsX = 3000; //adjust iterations for computer player 1
     public static int playOutsO = 3000; //adjust iterations for computer player 2
     public static int bestAI = 0;
     public static boolean humanPlayer1 = true;
     public static boolean humanPlayer2 = false;
-    public MCTS(Board b)
+    static Scanner play = new Scanner(System.in);
+    public static int[][] board;
+   public static Random rand = new Random();
+    public GameBoard(Board b)
     {
+        this.board = b.board;
         this.b = b;
     }
-    public static boolean checkTie(char[][] gameBoard) {
+
+    public void Run()
+    {
+        long startTime = System.nanoTime();
+        boolean gameLoop = true;
+        while(gameLoop){
+            playTurn(turn,board);
+            if (checkWin(board, turn))
+            {
+                break;
+            }
+            else if (checkTie(board))
+            {
+                break;
+            }
+            playAI(board);
+            if (checkWin(board, turn))
+            {
+                break;
+            }
+            else if (checkTie(board))
+            {
+                System.out.println("It's a tie!");
+                break;
+            }
+            if (turn == 2){turn = 1;} //changes turn
+            else{turn=2;}
+
+        }
+        long elapsedTime = System.nanoTime() - startTime;
+        //System.out.println(elapsedTime);
+
+    }
+    //sees if board is full if there is no winner
+    public static boolean checkTie(int[][] gameBoard) {
         if (!checkWin(gameBoard, turn))
         {
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    if (gameBoard[i][j] == '-')
+                    if (gameBoard[i][j] == 0)
                     {
                         return false;
                     }
@@ -31,7 +77,7 @@ public class MCTS
         return true;
     }
 
-    public static void buildBoard(char[][] boardState, char player)
+    public static void buildBoard(int[][] boardState, char player)
     {
 
         System.out.println("");
@@ -40,7 +86,7 @@ public class MCTS
 
             for(int j = 0; j < columns; j++){
                 if (j == 0){System.out.print("| ");}
-                if (boardState[i][j] == '\0'){boardState[i][j] = '-';} //fills empty spaces with '-'
+                if (boardState[i][j] == '\0'){boardState[i][j] = 0;} //fills empty spaces with 0
 
 
                 System.out.print(boardState[i][j] + " | ");
@@ -50,69 +96,19 @@ public class MCTS
     }
 
     //asks human player to make move
-    public static void playTurn (char color, char[][] boardState){
+    public static void playTurn (int color, int[][] boardState){
 
-        System.out.println("In which column would you like to drop your piece?");
         int piece = 0;
-        while(true)
-        {
-
-            try {
-                piece = play.nextInt(); //asks user to input a column to drop it in
-                //if input is within range of columns and there is an open space in that column, continue to drop piece
-                if ((piece > 0 && piece <= columns) && (boardState[0][piece-1]=='-')){break;}
-
-                //check for full columns
-                else if ((piece > 0 && piece <= columns) && (boardState[0][piece-1]=='X' || boardState[0][piece-1]=='O')){
-
-                    System.out.println();
-                    System.out.println("Sorry, this column is full!");
-                    System.out.println();
-                    System.out.print("In which column would you like to drop your piece?");
-
-
-                }
-                //make sure input is within valid range of columns
-                else if(piece < 1 || piece > columns){
-                    System.out.println();
-                    System.out.println("Please input a number from 1 to " + columns + "!");
-                    System.out.println();
-                    System.out.print("In which column would you like to drop your piece?");
-
-                }
-
-
-            }
-            //makes sure input is a valid int
-            catch (InputMismatchException e){
-                System.out.println();
-                System.out.println("Please input a valid integer!");
-                System.out.println();
-                System.out.print("In which column would you like to drop your piece?");
-                play.next();
-            }
-        }
-        piece--; //adjust for index starting at 0
-        //drop piece in first available row within column
-        for(int i = (rows-1); i >= 0; i--)
-        {
-
-            if (boardState[i][piece]=='-')
-            {
-
-                boardState[i][piece]= color;
-                break;
-
-            }
-
+        int move = rand.nextInt(6) + 1;
+        while (move < 1 || move > 7 || !b.isLegalMove(move)) {
+            move = rand.nextInt(6) + 1;
         }
 
-
-
-
+        //Assume 2 is the opponent
+        b.placeMove(move, 2);
     }
 
-    public static boolean checkWin (char[][] boardState, char winner){
+    public static boolean checkWin (int[][] boardState, int winner){
 
         //check horizontal win
         for (int i = 0; i < rows; i++){
@@ -186,11 +182,12 @@ public class MCTS
         return false;
 
     }
-    public static void playAI (char[][] gameBoard)
+
+    public static void playAI (int[][] gameBoard)
     {
         Node root = new Node(gameBoard);
         int playOuts; //number of iterations to go through (level of MCTS)
-        if (turn == 'O'){playOuts = playOutsO;}
+        if (turn == 2){playOuts = playOutsO;}
         else {playOuts = playOutsX;}
         for (int i = 0; i < playOuts; i++) //runs through MCTS algorithm sequence for number of iterations
         {
@@ -214,7 +211,7 @@ public class MCTS
         System.out.println(bestAI);
         for(int i = (rows-1); i >= 0; i--)
         {
-            if (gameBoard[i][bestAI]=='-')
+            if (gameBoard[i][bestAI]==0)
             {
 
                 gameBoard[i][bestAI]= turn; //drops piece based on child with highest value
@@ -223,5 +220,5 @@ public class MCTS
             }
         }
     }
-    */
+
 }

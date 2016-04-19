@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -9,7 +10,11 @@ public class AlphaBeta {
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation = -1;
-    private int maxDepth = 6;
+    private int maxDepth = 4;
+    private int numberOfMoves = 0;
+    private int childCount =0;
+    private int maxChildCount =0;
+    private ArrayList<Integer> runningChilTotal = new ArrayList<>();
 
     public AlphaBeta(Board b) {
         this.b = b;
@@ -246,7 +251,8 @@ public class AlphaBeta {
     }
 
     public int minimax(int depth, int turn, int alpha, int beta) {
-        if (beta <= alpha) {
+        if (beta <= alpha)
+        {
             if (turn == 1) {
                 return Integer.MAX_VALUE;
             } else {
@@ -277,7 +283,9 @@ public class AlphaBeta {
                 if (!b.isLegalMove(i, j))
                     continue;
 
-                if (turn == 1) {
+                if (turn == 1)
+                {
+                    childCount++;
                     b.placeMoveMiniMac(i, j, 1);
                     currentScore = minimax(depth + 1, 2, alpha, beta);
 //                    maxScore = Math.max(currentScore, maxScore);
@@ -296,7 +304,9 @@ public class AlphaBeta {
                     maxScore = Math.max(currentScore, maxScore);
                     alpha = Math.max(currentScore, alpha);
 
-                } else if (turn == 2) {
+                } else if (turn == 2)
+                {
+                    childCount++;
                     b.placeMoveMiniMac(i, j, 2);
                     currentScore = minimax(depth + 1, 1, alpha, beta);
                     minScore = Math.min(currentScore, minScore);
@@ -315,6 +325,13 @@ public class AlphaBeta {
     public int getAIMove() {
         nextMoveLocation = -1;
         minimax(0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if(getChildCount() > getMaxChildCount())
+        {
+            maxChildCount= getChildCount();
+        }
+        getRunningChilTotal().add(getChildCount());
+        childCount=0;
+        numberOfMoves = getNumberOfMoves() + 1;
         return nextMoveLocation;
     }
 
@@ -322,9 +339,10 @@ public class AlphaBeta {
      * Algorithm player is equal to 1
      * Simple reflex agent as random Generator is 2
      */
-    public void play() {
+    public Boolean play() {
         int humanMove = -1;
         int player;
+        boolean alphaBeta=false;
         Random rand = new Random();
         player = rand.nextInt(10);
 //        if(player<5) {
@@ -337,39 +355,57 @@ public class AlphaBeta {
         while (true) {
             //System.out.println("This is the inital board state ");
             //b.printBoard();
-            letOpponentMove();
+
+            int inde = 0;
+            b.placeMove(inde = getAIMove(), 1);
             //System.out.println("After reflex Agent ");
             //b.printBoard();
             int gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
+                alphaBeta=true;
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
+                alphaBeta=false;
                 break;
             } else if (gameResult == 0) {
                 System.out.println("Draw!");
             }
-            int inde = 0;
-            b.placeMove(inde = getAIMove(), 1);
+            letOpponentMove();
             //System.out.println("After MiniMax ");
             //b.printBoard();
             gameResult = gameResult(b);
             if (gameResult == 1) {
                 System.out.println("MiniMax Wins!");
+                alphaBeta=true;
                 break;
             } else if (gameResult == 2) {
                 System.out.println("Simple Reflex Wins!");
+                alphaBeta=false;
                 break;
             } else if (gameResult == 0) {
                 System.out.println("Draw!");
             }
         }
-
+    return alphaBeta;
     }
 
-    public void printPlayerChange() {
-
+    public int getNumberOfMoves()
+    {
+        return numberOfMoves;
     }
 
+    public int getChildCount()
+    {
+        return childCount;
+    }
+
+    public int getMaxChildCount() {
+        return maxChildCount;
+    }
+
+    public ArrayList<Integer> getRunningChilTotal() {
+        return runningChilTotal;
+    }
 }

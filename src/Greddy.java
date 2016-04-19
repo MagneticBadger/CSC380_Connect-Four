@@ -4,21 +4,21 @@ import java.util.Random;
 /**
  * Created by Michael Suggs on 4/7/16.
  */
-public class MiniMax
+public class Greddy
 {
 
     private Board b;
     //    private Scanner sca
     Random rand = new Random();
     private int nextMoveLocation=-1;
-    private int maxDepth = 4;
+    private int maxDepth = 1;
     public int numberOfMoves=0;
     private double memorySize =0;
     public int childCount;
     public int maxChildCount;
     private ArrayList<Integer> runningChilTotal = new ArrayList<>();
 
-    public MiniMax(Board b)
+    public Greddy(Board b)
     {
         this.b = b;
     }
@@ -312,7 +312,7 @@ public class MiniMax
         boolean miniMaxWinner=false;
         while(true)
         {
-           // System.out.println("This is the inital board state ");
+            // System.out.println("This is the inital board state ");
             //b.printBoard();
             int inde=0;
             b.placeMove(inde = getAIMove(), 1);
@@ -374,3 +374,4 @@ public class MiniMax
         this.runningChilTotal = runningChilTotal;
     }
 }
+

@@ -135,15 +135,5 @@ public class Board {
     public void setBoard(int[][] board) {
         this.board = board;
     }
-    public Board testCopy2DArray(int[][] b)
-    {
-        int[][] myInt = new int[b.length][];
-        for (int i = 0; i < b.length; i++) {
-            myInt[i] = new int[b[i].length];
-            for (int j = 0; j < b[i].length; j++) {
-                myInt[i][j] = b[i][j];
-            }
-        }
-        return new Board(b);
-    }
+
 }
